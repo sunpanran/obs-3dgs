@@ -15,6 +15,7 @@ target_sources(
     lens-presets.hpp
     localization.cpp
     localization.hpp
+    obs-locale.hpp
     local-server.cpp
     local-server.hpp
     one-shot-authorization.hpp

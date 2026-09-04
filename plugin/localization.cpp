@@ -1,14 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "localization.hpp"
+#include "obs-locale.hpp"
 
 #include <obs-module.h>
 
 #include <QByteArray>
-#include <QDir>
 #include <QFile>
-#include <QFileInfo>
-#include <QSettings>
 #include <QStringConverter>
 #include <QTextStream>
 
@@ -27,22 +25,12 @@ void Localization::initialize()
   std::lock_guard lock(mutex_);
   english_ = loadLocale("en-US");
   chinese_ = loadLocale("zh-CN");
-  char *configPath = obs_module_config_path("settings.ini");
-  if (configPath) {
-    configPath_ = QString::fromUtf8(configPath);
-    bfree(configPath);
-    QSettings settings(configPath_, QSettings::IniFormat);
-    const auto stored = settings.value(QStringLiteral("language"), QStringLiteral("auto")).toString().toStdString();
-    if (stored == "auto" || stored == "zh-CN" || stored == "en-US")
-      selection_ = stored;
-  }
 }
 
 QString Localization::translate(const char *key) const
 {
   std::lock_guard lock(mutex_);
-  const bool chinese = selection_ == "zh-CN" ||
-                       (selection_ == "auto" && obs_get_locale() && std::strncmp(obs_get_locale(), "zh", 2) == 0);
+  const bool chinese = std::strcmp(localeForObs(obs_get_locale()), "zh-CN") == 0;
   const auto &primary = chinese ? chinese_ : english_;
   if (const auto found = primary.find(key); found != primary.end())
     return found->second;
@@ -51,30 +39,9 @@ QString Localization::translate(const char *key) const
   return QString::fromUtf8(key);
 }
 
-std::string Localization::selection() const
-{
-  std::lock_guard lock(mutex_);
-  return selection_;
-}
-
 std::string Localization::effectiveLocale() const
 {
-  std::lock_guard lock(mutex_);
-  if (selection_ != "auto")
-    return selection_;
-  const char *locale = obs_get_locale();
-  return locale && std::strncmp(locale, "zh", 2) == 0 ? "zh-CN" : "en-US";
-}
-
-void Localization::setSelection(const std::string &selection)
-{
-  if (selection != "auto" && selection != "zh-CN" && selection != "en-US")
-    return;
-  {
-    std::lock_guard lock(mutex_);
-    selection_ = selection;
-  }
-  saveSelection();
+  return localeForObs(obs_get_locale());
 }
 
 std::unordered_map<std::string, QString> Localization::loadLocale(const char *name)
@@ -107,17 +74,6 @@ std::unordered_map<std::string, QString> Localization::loadLocale(const char *na
     result[key.toStdString()] = value;
   }
   return result;
-}
-
-void Localization::saveSelection() const
-{
-  std::lock_guard lock(mutex_);
-  if (configPath_.isEmpty())
-    return;
-  QDir().mkpath(QFileInfo(configPath_).absolutePath());
-  QSettings settings(configPath_, QSettings::IniFormat);
-  settings.setValue(QStringLiteral("language"), QString::fromStdString(selection_));
-  settings.sync();
 }
 
 const char *text(const char *key)

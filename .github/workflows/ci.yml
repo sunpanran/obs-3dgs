@@ -114,6 +114,10 @@ jobs:
         run: |
           version="$(node -p "require('./package.json').version")"
           test "$GITHUB_REF_NAME" = "v$version"
+          if gh release view "$GITHUB_REF_NAME" --json isDraft > /dev/null 2>&1; then
+            echo "Release $GITHUB_REF_NAME already exists; keeping its verified assets."
+            exit 0
+          fi
           gh release create "$GITHUB_REF_NAME" release-files/*.zip release-files/*.sha256 \
             --verify-tag --draft --prerelease --title "obs-3dgs $version" \
             --notes-file "docs/releases/$version.md"

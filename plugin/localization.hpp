@@ -16,21 +16,16 @@ public:
 
   void initialize();
   [[nodiscard]] QString translate(const char *key) const;
-  [[nodiscard]] std::string selection() const;
   [[nodiscard]] std::string effectiveLocale() const;
-  void setSelection(const std::string &selection);
 
 private:
   Localization() = default;
 
   static std::unordered_map<std::string, QString> loadLocale(const char *name);
-  void saveSelection() const;
 
   mutable std::mutex mutex_;
   std::unordered_map<std::string, QString> english_;
   std::unordered_map<std::string, QString> chinese_;
-  std::string selection_ = "auto";
-  QString configPath_;
 };
 
 const char *text(const char *key);

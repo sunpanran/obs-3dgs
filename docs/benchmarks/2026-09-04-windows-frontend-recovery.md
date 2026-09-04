@@ -2,7 +2,7 @@
 
 [简体中文](2026-09-04-windows-frontend-recovery.zh-CN.md)
 
-Manual testing on Windows 11 / OBS 32.2.2 exposed hidden live-control content and an OBS crash when applying a replacement in the Missing Files dialog. Automated regressions now pass; the user's menu/button retest remains pending in the [manual checklist](../manual-acceptance.md).
+Manual testing on Windows 11 / OBS 32.2.2 exposed hidden live-control content and an OBS crash when applying a replacement in the Missing Files dialog. Automated regressions now pass; the user confirmed the menu/button retest passed in the [manual checklist](../manual-acceptance.md).
 
 OBS already hides the outer dock when registering it. The plugin additionally hid the child QWidget, which stayed hidden when the outer dock was shown. Registration now leaves the contents available, and opening the panel restores both layers. The Qt regression checks visible preset controls and closing/reopening the dock.
 

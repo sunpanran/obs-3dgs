@@ -4,7 +4,7 @@
 
 `obs-3dgs` is an open-source OBS input source for using a local 3D Gaussian Splatting scene as a live background. It combines a small native OBS/Qt wrapper with the [Spark](https://github.com/sparkjsdev/spark) WebGL2 renderer, so the project does not reimplement Gaussian parsing, sorting, or LOD.
 
-> Status: `0.1.0-beta.1` candidate; the release is currently a draft. Windows x64 and macOS Universal pass CI builds, automated tests and packaging. Windows has real OBS regression and recording evidence. **macOS has not been tested in OBS on a physical Mac.** Windows frontend manual acceptance is also incomplete; see the [acceptance checklist](docs/manual-acceptance.md).
+> Version: `0.1.0-beta.1` beta. Windows has automated checks and user acceptance. **macOS has not been tested in OBS on a physical Mac**; its current evidence covers CI builds and automated tests.
 
 ## Download and install
 
@@ -59,7 +59,6 @@ To update, close OBS and replace the plugin folder or bundle with the newly extr
 - Keeps a valid scene visible while a replacement loads.
 - Provides scene transform, full-frame focal length, orbit/pan/dolly interaction, display controls, LOD quality presets, camera presets, and OBS hotkeys.
 - Provides a compact native `3DGS Live Control` dock without duplicating the render preview.
-- Supports English and Simplified Chinese.
 - Serves only the selected asset through a token-protected, loopback-only HTTP endpoint.
 
 Stable formats are PLY, compressed PLY, SPZ, and SOG. SPLAT, KSPLAT, ZIP, and RAD are experimental in the first beta.

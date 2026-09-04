@@ -6,13 +6,13 @@ Rendering evidence must identify the scene, camera pose, focal length, output re
 
 ## First beta acceptance
 
-Publication of `0.1.0-beta.1` awaits the seven Windows frontend checks in the [manual checklist](manual-acceptance.md). After they pass, the beta may be published while macOS hardware validation is pending, provided the README and release notes explicitly state that macOS has not been tested in OBS on a physical Mac. The M1 performance targets below remain unverified validation targets; they are not a publication gate for this beta. RTX 4060 performance remains a Stable gate.
+Windows [manual acceptance](manual-acceptance.md) is complete. `0.1.0-beta.1` is a beta with macOS hardware validation pending; the README and release notes explicitly state that macOS has not been tested in OBS on a physical Mac. The M1 performance targets below remain unverified validation targets; they are not a publication gate for this beta. RTX 4060 performance remains a Stable gate.
 
 ## Recorded evidence
 
-[Grouped-source and Dock layout regression](benchmarks/2026-09-04-dock-groups-layout.md) covers automatic selection through nested groups and the tabbed layout with full-width sliders. The user confirmed fix1 hotkeys and missing-file recovery passed; complete-window visual acceptance remains a manual check.
+[Grouped-source and Dock layout regression](benchmarks/2026-09-04-dock-groups-layout.md) covers automatic selection through nested groups and the tabbed layout with full-width sliders. The user confirmed fix1 hotkeys and missing-file recovery passed; the user has confirmed the updated layout passed manual validation.
 
-[Windows frontend recovery regression](benchmarks/2026-09-04-windows-frontend-recovery.md) fixes the manually reported hidden dock contents and Missing Files Apply crash. The real missing-file callback now covers normal/locked recovery, camera preservation and continued protection of ordinary edits; the user's frontend retest remains pending.
+[Windows frontend recovery regression](benchmarks/2026-09-04-windows-frontend-recovery.md) fixes the manually reported hidden dock contents and Missing Files Apply crash. The real missing-file callback now covers normal/locked recovery, camera preservation and continued protection of ordinary edits; the user has confirmed the frontend retest passed.
 
 The current renderer-only preflight is recorded in [Windows Web renderer preflight](benchmarks/2026-09-03-windows-web-preflight.md). It does not replace the OBS integration gate below.
 

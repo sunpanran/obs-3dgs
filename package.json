@@ -2,7 +2,7 @@
   "name": "obs-3dgs",
   "version": "0.1.0-beta.1",
   "private": true,
-  "description": "A bilingual OBS source for local 3D Gaussian Splatting scenes.",
+  "description": "An OBS source for local 3D Gaussian Splatting backgrounds.",
   "license": "GPL-2.0-or-later",
   "type": "module",
   "engines": {

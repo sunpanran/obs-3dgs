@@ -74,7 +74,6 @@ public:
   static bool setSetting(const std::string &uuid, const char *name, bool value, bool bypassLiveLock = false);
   static bool setSetting(const std::string &uuid, const char *name, const std::string &value,
                          bool bypassLiveLock = false);
-  static void notifyLocaleChanged();
 
 private:
   void createOrUpdateBrowser();
@@ -101,7 +100,6 @@ private:
   static void missingFileResolved(void *data, const char *newPath, void *privateData);
   bool isLiveLocked() const;
   bool commandAllowed(const std::string &command) const;
-  static std::string effectiveLocale(obs_data_t *settings);
   static nlohmann::json colorJson(std::uint64_t color);
   static bool updateSettingValue(const std::string &uuid, const char *name, bool bypassLiveLock,
                                  const std::function<void(obs_data_t *)> &setter);

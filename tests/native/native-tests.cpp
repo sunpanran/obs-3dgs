@@ -2,6 +2,7 @@
 #include "angle-utils.hpp"
 #include "lens-presets.hpp"
 #include "one-shot-authorization.hpp"
+#include "obs-locale.hpp"
 #include "property-ui.hpp"
 #include "property-ui-state.hpp"
 #include "settings-snapshot.hpp"
@@ -246,6 +247,12 @@ int main()
   const auto chineseKeys = localeKeys(sourceRoot / "data" / "locale" / "zh-CN.ini");
   expect(!englishKeys.empty(), "English native locale should not be empty");
   expect(englishKeys == chineseKeys, "English and Chinese native locale keys should match");
+  expect(std::string(obs3dgs::localeForObs("zh-CN")) == "zh-CN", "native text should follow the OBS locale");
+  expect(std::string(obs3dgs::localeForObs("ZH-tw")) == "zh-CN", "locale matching should accept case variants");
+  expect(std::string(obs3dgs::localeForObs("en-US")) == "en-US", "the OBS English locale should remain English");
+  expect(std::string(obs3dgs::localeForObs("fr-FR")) == "en-US", "unsupported locales should use the fallback catalog");
+  expect(std::string(obs3dgs::localeForObs("")) == "en-US", "an empty OBS locale should use the fallback catalog");
+  expect(std::string(obs3dgs::localeForObs(nullptr)) == "en-US", "a missing OBS locale should use the fallback catalog");
 
   const auto sourceImplementation = readTextFile(sourceRoot / "plugin" / "source.cpp");
   expect(sourceImplementation.find("obs_source_inc_active(browser_)") == std::string::npos,

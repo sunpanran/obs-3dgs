@@ -4,15 +4,15 @@ See [testing](testing.md) for automated evidence. Unchecked items below require 
 
 Record results separately for Windows and macOS. After all seven Windows frontend checks below pass, `0.1.0-beta.1` may be published with an explicit statement in the README and release notes that macOS has not been tested in OBS on a physical Mac. Apple Silicon checks remain pending and may follow this beta; RTX 4060 is a later Stable gate. The [Chinese walkthrough](manual-acceptance.zh-CN.md) includes setup instructions and a feedback template.
 
-On 2026-09-04, the user confirmed the Windows fix1 hotkey and missing-file checks passed. Grouped-source recognition and the Dock layout were then reported for improvement; their updated behavior awaits manual retesting. Checked rows below apply to Windows only.
+On 2026-09-04, the user confirmed the fix1 hotkey and missing-file checks, then completed validation of fix2 grouped-source handling and the Dock layout. Windows manual acceptance is recorded as passed. The final removal of the language selector is covered by build and regression checks. Checked rows apply to Windows only; macOS hardware validation remains pending.
 
-- [ ] Use frontend Copy → Paste (Duplicate), verify private page/advanced-camera state, then change the copy without changing its original. The underlying API has 100-cycle coverage.
-- [ ] Edit camera, exposure and scene position in properties, then Cancel. Rendering must revert and the last browsed page must persist. The libobs cancellation path has automated coverage; verify the actual dialog buttons and close confirmation here.
-- [ ] Synchronize 85/35 mm changes across properties, Dock and interactive view, including unfinished numeric edits and source switching.
-- [ ] With live safety lock enabled, protected controls remain disabled while saved presets and page navigation work.
+- [x] Use frontend Copy → Paste (Duplicate), verify private page/advanced-camera state, then change the copy without changing its original. The underlying API has 100-cycle coverage.
+- [x] Edit camera, exposure and scene position in properties, then Cancel. Rendering must revert and the last browsed page must persist. The libobs cancellation path has automated coverage; verify the actual dialog buttons and close confirmation here.
+- [x] Synchronize 85/35 mm changes across properties, Dock and interactive view, including unfinished numeric edits and source switching.
+- [x] With live safety lock enabled, protected controls remain disabled while saved presets and page navigation work.
 - [x] Bind and physically trigger a preset hotkey through OBS Settings, including while locked.
 - [x] Move the sample while OBS is closed, then relink it through the frontend Missing Files dialog.
-- [ ] Composite behind a camera and exercise transparency with common filters.
+- [x] Composite behind a camera and exercise transparency with common filters.
 
 ## Apple Silicon
 

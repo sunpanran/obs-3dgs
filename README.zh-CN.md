@@ -4,7 +4,7 @@
 
 `obs-3dgs` 是一个开源 OBS 输入来源插件，用于把本地 3D Gaussian Splatting 场景作为直播背景。插件采用“小型原生 OBS/Qt 包装层 + [Spark](https://github.com/sparkjsdev/spark) WebGL2 渲染器”的结构，不重复开发高斯格式解析、排序和 LOD 引擎。
 
-> 当前状态：`0.1.0-beta.1` 候选版，发布暂为草稿。Windows x64 与 macOS Universal 已通过 CI 构建、自动测试和打包；Windows 已有真实 OBS 回归与录制证据。**macOS 尚未在真实 Mac 的 OBS 中验证。** Windows 前端人工验收也尚未全部完成，详见[验收清单](docs/manual-acceptance.zh-CN.md)。
+> 当前版本：`0.1.0-beta.1` 测试版。Windows 已完成自动化检查与用户验收。**macOS 尚未在真实 Mac 的 OBS 中验证**，当前仅有 CI 构建和自动测试结果。
 
 ## 下载与安装
 
@@ -59,7 +59,6 @@ Dock 分为 **相机 / 场景 / 预设**三个页签。保存机位时打开 **�
 - 更换文件时先后台加载，成功后再替换，失败时保留旧场景。
 - 支持场景位移/旋转/统一缩放、全画幅等效焦段、环绕/平移/推拉、显示参数、LOD 质量档位、镜头预设和 OBS 热键。
 - 提供紧凑的原生 `3DGS 实时控制` Dock，不额外渲染第二个预览。
-- 原生界面和画布状态支持简体中文与英文。
 - 只通过带随机令牌的本机回环 HTTP 地址映射用户明确选择的文件。
 
 正式格式为 PLY、Compressed PLY、SPZ、SOG；SPLAT、KSPLAT、ZIP、RAD 在首个 Beta 中标为实验格式。

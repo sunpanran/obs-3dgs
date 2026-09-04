@@ -105,18 +105,17 @@ public:
     auto *top = new QGridLayout();
     top->setHorizontalSpacing(14);
     top->setVerticalSpacing(8);
-    top->setColumnStretch(0, 3);
-    top->setColumnStretch(1, 2);
-    top->addWidget(translatedLabel("Dock.Source", this), 0, 0, 1, 2);
+    top->setColumnStretch(0, 1);
+    top->addWidget(translatedLabel("Dock.Source", this), 0, 0);
     sourceCombo_ = new QComboBox(this);
     sourceCombo_->setObjectName(QStringLiteral("obs3dgsSourceSelector"));
     sourceCombo_->setMinimumHeight(32);
     sourceCombo_->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
     sourceCombo_->setMinimumContentsLength(12);
-    top->addWidget(sourceCombo_, 1, 0, 1, 2);
+    top->addWidget(sourceCombo_, 1, 0);
     status_ = new QLabel(QString::fromUtf8(obs_module_text("Dock.NoSource")), this);
     status_->setWordWrap(true);
-    top->addWidget(status_, 2, 0, 1, 2);
+    top->addWidget(status_, 2, 0);
     top->addWidget(translatedLabel("Dock.QualityPreset", this), 3, 0);
     quality_ = new QComboBox(this);
     quality_->addItem(QString::fromUtf8(obs_module_text("Quality.Performance")), "performance");
@@ -127,16 +126,7 @@ public:
     top->addWidget(quality_, 4, 0);
     liveLock_ = new QCheckBox(QString::fromUtf8(obs_module_text("Safety.LiveLock")), this);
     setI18nKey(liveLock_, "Safety.LiveLock");
-    top->addWidget(liveLock_, 5, 0, 1, 2);
-    top->addWidget(translatedLabel("Dock.Language", this), 3, 1);
-    language_ = new QComboBox(this);
-    language_->addItem(QString::fromUtf8(obs_module_text("Language.Auto")), "auto");
-    language_->addItem(QString::fromUtf8(obs_module_text("Language.Chinese")), "zh-CN");
-    language_->addItem(QString::fromUtf8(obs_module_text("Language.English")), "en-US");
-    const int languageIndex = language_->findData(QString::fromStdString(Localization::instance().selection()));
-    language_->setCurrentIndex(std::max(0, languageIndex));
-    language_->setMinimumHeight(32);
-    top->addWidget(language_, 4, 1);
+    top->addWidget(liveLock_, 5, 0);
     root->addLayout(top);
 
     tabs_ = new QTabWidget(this);
@@ -274,14 +264,6 @@ public:
       if (!syncing_)
         Obs3dgsSource::setSetting(currentSourceId_, "live_lock", checked);
       updateLockUi(checked);
-    });
-    connect(language_, &QComboBox::currentIndexChanged, this, [this] {
-      if (syncing_)
-        return;
-      Localization::instance().setSelection(language_->currentData().toString().toStdString());
-      retranslate();
-      Obs3dgsSource::notifyLocaleChanged();
-      status_->setText(QString::fromUtf8(obs_module_text("Dock.ReopenProperties")));
     });
 
     changeTimer_.setInterval(34);
@@ -577,40 +559,6 @@ private:
     nextPreset_->setEnabled(!presets_.empty() && !currentSourceId_.empty());
   }
 
-  void retranslate()
-  {
-    const auto widgets = findChildren<QWidget *>();
-    for (auto *widget : widgets) {
-      const QString key = widget->property(I18N_KEY_PROPERTY).toString();
-      if (key.isEmpty())
-        continue;
-      const QString value = Localization::instance().translate(key.toUtf8().constData());
-      if (auto *label = qobject_cast<QLabel *>(widget))
-        label->setText(value);
-      else if (auto *button = qobject_cast<QAbstractButton *>(widget))
-        button->setText(value);
-    }
-    if (sourceCombo_->count() > 0)
-      sourceCombo_->setItemText(0, QString::fromUtf8(obs_module_text("Dock.AutoSource")));
-    quality_->setItemText(0, QString::fromUtf8(obs_module_text("Quality.Performance")));
-    quality_->setItemText(1, QString::fromUtf8(obs_module_text("Quality.Balanced")));
-    quality_->setItemText(2, QString::fromUtf8(obs_module_text("Quality.Quality")));
-    quality_->setItemText(3, QString::fromUtf8(obs_module_text("Quality.Custom")));
-    language_->setItemText(0, QString::fromUtf8(obs_module_text("Language.Auto")));
-    language_->setItemText(1, QString::fromUtf8(obs_module_text("Language.Chinese")));
-    language_->setItemText(2, QString::fromUtf8(obs_module_text("Language.English")));
-    tabs_->setTabText(0, QString::fromUtf8(obs_module_text("Dock.CameraTab")));
-    tabs_->setTabText(1, QString::fromUtf8(obs_module_text("Dock.SceneTab")));
-    tabs_->setTabText(2, QString::fromUtf8(obs_module_text("Dock.PresetsTab")));
-    presetCombo_->setPlaceholderText(QString::fromUtf8(obs_module_text("Dock.NoPresets")));
-    updateFov(focalLength_ ? focalLength_->value() : 35.0);
-    QWidget *parent = this;
-    while (parent && !qobject_cast<QDockWidget *>(parent))
-      parent = parent->parentWidget();
-    if (parent)
-      parent->setWindowTitle(QString::fromUtf8(obs_module_text("Dock.Title")));
-  }
-
   void setControlsAvailable(bool available)
   {
     liveLock_->setEnabled(available);
@@ -626,7 +574,6 @@ private:
   QLabel *status_ = nullptr;
   QComboBox *quality_ = nullptr;
   QCheckBox *liveLock_ = nullptr;
-  QComboBox *language_ = nullptr;
   ScalarControl *positionX_ = nullptr;
   ScalarControl *positionY_ = nullptr;
   ScalarControl *positionZ_ = nullptr;

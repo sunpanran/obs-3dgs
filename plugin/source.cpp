@@ -1254,15 +1254,6 @@ bool Obs3dgsSource::setSetting(const std::string &uuid, const char *name, const 
   });
 }
 
-void Obs3dgsSource::notifyLocaleChanged()
-{
-  std::lock_guard lock(registryMutex_);
-  for (auto *source : registry_) {
-    source->queueState();
-    obs_source_update_properties(source->source_);
-  }
-}
-
 void Obs3dgsSource::createOrUpdateBrowser()
 {
   std::string serverError;
@@ -1490,7 +1481,7 @@ void Obs3dgsSource::sendState(bool allowLockedCameraPreset, bool allowMissingFil
 
   nlohmann::json payload = {
       {"settingsSchemaVersion", SETTINGS_SCHEMA_VERSION},
-      {"locale", effectiveLocale(committedSettings_)},
+      {"locale", Localization::instance().effectiveLocale()},
       {"asset",
        {
            {"localUrl", localAssetUrl_},
@@ -1622,12 +1613,6 @@ bool Obs3dgsSource::commandAllowed(const std::string &command) const
     return true;
   static const std::array allowed = {"applyPreset", "previousPreset", "nextPreset", "presetHotkey"};
   return std::find(allowed.begin(), allowed.end(), command) != allowed.end();
-}
-
-std::string Obs3dgsSource::effectiveLocale(obs_data_t *settings)
-{
-  (void)settings;
-  return Localization::instance().effectiveLocale();
 }
 
 nlohmann::json Obs3dgsSource::colorJson(std::uint64_t color)
