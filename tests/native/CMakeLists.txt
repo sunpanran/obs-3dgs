@@ -10,6 +10,11 @@ target_compile_features(obs-3dgs-native-tests PRIVATE cxx_std_20)
 target_compile_definitions(obs-3dgs-native-tests PRIVATE OBS_3DGS_SOURCE_DIR="${PROJECT_SOURCE_DIR}")
 target_link_libraries(obs-3dgs-native-tests PRIVATE OBS::libobs)
 add_test(NAME obs-3dgs-native-tests COMMAND obs-3dgs-native-tests)
+add_executable(obs-3dgs-source-selection-tests source-selection-tests.cpp "${PROJECT_SOURCE_DIR}/plugin/source-selection.cpp")
+target_include_directories(obs-3dgs-source-selection-tests PRIVATE "${PROJECT_SOURCE_DIR}/plugin")
+target_compile_features(obs-3dgs-source-selection-tests PRIVATE cxx_std_20)
+target_link_libraries(obs-3dgs-source-selection-tests PRIVATE OBS::libobs)
+add_test(NAME obs-3dgs-source-selection-tests COMMAND obs-3dgs-source-selection-tests)
 add_test(NAME obs-3dgs-dependency-config-tests
   COMMAND "${CMAKE_COMMAND}" "-DSOURCE_ROOT=${PROJECT_SOURCE_DIR}" -P "${CMAKE_CURRENT_SOURCE_DIR}/dependency-config-tests.cmake")
 
@@ -38,6 +43,7 @@ if(OS_WINDOWS)
   endforeach()
   set_tests_properties(
     obs-3dgs-native-tests
+    obs-3dgs-source-selection-tests
     PROPERTIES ENVIRONMENT_MODIFICATION "${_obs_3dgs_test_runtime_paths}"
   )
   set_tests_properties(obs-3dgs-dock-tests PROPERTIES
@@ -55,6 +61,6 @@ elseif(OS_MACOS)
         "DYLD_LIBRARY_PATH=path_list_prepend:${_prefix}/lib")
     endif()
   endforeach()
-  set_tests_properties(obs-3dgs-native-tests obs-3dgs-dock-tests PROPERTIES
+  set_tests_properties(obs-3dgs-native-tests obs-3dgs-source-selection-tests obs-3dgs-dock-tests PROPERTIES
     ENVIRONMENT_MODIFICATION "${_obs_3dgs_test_runtime_paths}")
 endif()

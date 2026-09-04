@@ -24,22 +24,28 @@ public:
       : QWidget(parent), minimum_(minimum), maximum_(maximum), logarithmic_(logarithmic)
   {
     auto *layout = new QGridLayout(this);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->setHorizontalSpacing(8);
+    layout->setContentsMargins(0, 4, 0, 4);
+    layout->setHorizontalSpacing(12);
+    layout->setVerticalSpacing(6);
+    layout->setColumnStretch(0, 1);
     label_ = new QLabel(label, this);
     label_->setProperty("obs3dgsI18nKey", QString::fromUtf8(labelKey));
-    label_->setMinimumWidth(82);
+    label_->setWordWrap(true);
+    label_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     slider_ = new QSlider(Qt::Horizontal, this);
     slider_->setRange(0, 10000);
+    slider_->setMinimumHeight(18);
     spin_ = new QDoubleSpinBox(this);
     spin_->setRange(minimum, maximum);
     spin_->setSingleStep(step);
     spin_->setDecimals(step < 0.01 ? 3 : step < 0.1 ? 2 : 1);
     spin_->setKeyboardTracking(false);
-    spin_->setMinimumWidth(88);
+    spin_->setFixedWidth(112);
+    spin_->setMinimumHeight(30);
+    spin_->setAlignment(Qt::AlignRight);
     layout->addWidget(label_, 0, 0);
-    layout->addWidget(slider_, 0, 1);
-    layout->addWidget(spin_, 0, 2);
+    layout->addWidget(spin_, 0, 1);
+    layout->addWidget(slider_, 1, 0, 1, 2);
 
     connect(slider_, &QSlider::valueChanged, this, [this](int position) {
       if (syncing_)

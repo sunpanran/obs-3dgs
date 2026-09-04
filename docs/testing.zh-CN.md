@@ -10,6 +10,8 @@ Web 检查使用 `npm run typecheck`、`npm run lint`、`npm test` 和 `npm run 
 
 ## 已有证据
 
+[群组来源与 Dock 布局回归](benchmarks/2026-09-04-dock-groups-layout.zh-CN.md)覆盖群组及嵌套群组的自动来源选择，以及分栏位、页签和宽滑杆布局。用户已确认 fix1 的预设热键与缺失文件恢复通过；新版布局的视觉验收由用户手动完成。
+
 [Windows 前端恢复回归](benchmarks/2026-09-04-windows-frontend-recovery.zh-CN.md)修复人工验收发现的 Dock 内容隐藏和缺失文件“应用”崩溃，并通过真实缺失文件回调验证普通/锁定恢复、机位保留及后续锁定保护；用户窗口操作复测仍待反馈。
 
 当前仅渲染器预检记录在 [Windows Web 渲染预检](benchmarks/2026-09-03-windows-web-preflight.zh-CN.md)，它不能代替下方 OBS 集成门槛。

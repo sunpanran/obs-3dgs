@@ -8,6 +8,7 @@
 #include "pending-dock-edits.hpp"
 #include "scalar-control.hpp"
 #include "source.hpp"
+#include "source-selection.hpp"
 #include "localization.hpp"
 
 #include <obs-frontend-api.h>
@@ -33,6 +34,7 @@
 #include <QSignalBlocker>
 #include <QSlider>
 #include <QTimer>
+#include <QTabWidget>
 #include <QVBoxLayout>
 #include <QVariant>
 
@@ -54,7 +56,6 @@ namespace obs3dgs {
 namespace {
 
 constexpr const char *DOCK_ID = "obs-3dgs-control-dock";
-constexpr const char *SOURCE_ID = "obs_3dgs_source";
 constexpr const char *KEY_PRESETS = "camera_presets_json";
 constexpr const char *KEY_ACTIVE_PRESET = "active_camera_preset";
 constexpr const char *I18N_KEY_PROPERTY = "obs3dgsI18nKey";
@@ -72,14 +73,6 @@ QLabel *translatedLabel(const char *key, QWidget *parent)
 }
 
 
-QFrame *separator(QWidget *parent)
-{
-  auto *line = new QFrame(parent);
-  line->setFrameShape(QFrame::HLine);
-  line->setFrameShadow(QFrame::Sunken);
-  return line;
-}
-
 QLabel *sectionLabel(const char *key, QWidget *parent)
 {
   auto *label = translatedLabel(key, parent);
@@ -89,31 +82,14 @@ QLabel *sectionLabel(const char *key, QWidget *parent)
   return label;
 }
 
-std::string selected3dgsUuid()
+SourceSelection currentSourceSelection()
 {
   obs_source_t *sceneSource = obs_frontend_get_current_scene();
   if (!sceneSource)
     return {};
-  obs_scene_t *scene = obs_scene_from_source(sceneSource);
-  std::string uuid;
-  if (scene) {
-    obs_scene_enum_items(
-        scene,
-        [](obs_scene_t *, obs_sceneitem_t *item, void *parameter) {
-          if (!obs_sceneitem_selected(item))
-            return true;
-          obs_source_t *source = obs_sceneitem_get_source(item);
-          if (!source || std::string(obs_source_get_unversioned_id(source)) != SOURCE_ID)
-            return true;
-          const char *sourceUuid = obs_source_get_uuid(source);
-          if (sourceUuid)
-            *static_cast<std::string *>(parameter) = sourceUuid;
-          return false;
-        },
-        &uuid);
-  }
+  const auto selection = selected3dgsSource(obs_scene_from_source(sceneSource));
   obs_source_release(sceneSource);
-  return uuid;
+  return selection;
 }
 
 class ControlDock final : public QWidget {
@@ -121,45 +97,70 @@ public:
   explicit ControlDock(QWidget *parent = nullptr) : QWidget(parent)
   {
     setObjectName(QStringLiteral("obs3dgsControlDockContents"));
+    setMinimumWidth(300);
     auto *root = new QVBoxLayout(this);
-    root->setContentsMargins(10, 10, 10, 10);
-    root->setSpacing(8);
+    root->setContentsMargins(16, 16, 16, 16);
+    root->setSpacing(14);
 
     auto *top = new QGridLayout();
-    top->addWidget(translatedLabel("Dock.Source", this), 0, 0);
+    top->setHorizontalSpacing(14);
+    top->setVerticalSpacing(8);
+    top->setColumnStretch(0, 3);
+    top->setColumnStretch(1, 2);
+    top->addWidget(translatedLabel("Dock.Source", this), 0, 0, 1, 2);
     sourceCombo_ = new QComboBox(this);
-    top->addWidget(sourceCombo_, 0, 1, 1, 2);
+    sourceCombo_->setObjectName(QStringLiteral("obs3dgsSourceSelector"));
+    sourceCombo_->setMinimumHeight(32);
+    sourceCombo_->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+    sourceCombo_->setMinimumContentsLength(12);
+    top->addWidget(sourceCombo_, 1, 0, 1, 2);
     status_ = new QLabel(QString::fromUtf8(obs_module_text("Dock.NoSource")), this);
-    top->addWidget(status_, 1, 0, 1, 3);
-    top->addWidget(translatedLabel("Quality.Preset", this), 2, 0);
+    status_->setWordWrap(true);
+    top->addWidget(status_, 2, 0, 1, 2);
+    top->addWidget(translatedLabel("Dock.QualityPreset", this), 3, 0);
     quality_ = new QComboBox(this);
     quality_->addItem(QString::fromUtf8(obs_module_text("Quality.Performance")), "performance");
     quality_->addItem(QString::fromUtf8(obs_module_text("Quality.Balanced")), "balanced");
     quality_->addItem(QString::fromUtf8(obs_module_text("Quality.Quality")), "quality");
     quality_->addItem(QString::fromUtf8(obs_module_text("Quality.Custom")), "custom");
-    top->addWidget(quality_, 2, 1);
+    quality_->setMinimumHeight(32);
+    top->addWidget(quality_, 4, 0);
     liveLock_ = new QCheckBox(QString::fromUtf8(obs_module_text("Safety.LiveLock")), this);
     setI18nKey(liveLock_, "Safety.LiveLock");
-    top->addWidget(liveLock_, 2, 2);
-    top->addWidget(translatedLabel("Dock.Language", this), 3, 0);
+    top->addWidget(liveLock_, 5, 0, 1, 2);
+    top->addWidget(translatedLabel("Dock.Language", this), 3, 1);
     language_ = new QComboBox(this);
     language_->addItem(QString::fromUtf8(obs_module_text("Language.Auto")), "auto");
     language_->addItem(QString::fromUtf8(obs_module_text("Language.Chinese")), "zh-CN");
     language_->addItem(QString::fromUtf8(obs_module_text("Language.English")), "en-US");
     const int languageIndex = language_->findData(QString::fromStdString(Localization::instance().selection()));
     language_->setCurrentIndex(std::max(0, languageIndex));
-    top->addWidget(language_, 3, 1, 1, 2);
+    language_->setMinimumHeight(32);
+    top->addWidget(language_, 4, 1);
     root->addLayout(top);
 
-    auto *scroll = new QScrollArea(this);
-    scroll->setWidgetResizable(true);
-    scroll->setFrameShape(QFrame::NoFrame);
-    auto *contents = new QWidget(scroll);
-    auto *controls = new QVBoxLayout(contents);
-    controls->setContentsMargins(0, 4, 0, 4);
-    controls->setSpacing(6);
-
-    controls->addWidget(sectionLabel("Transform.Title", contents));
+    tabs_ = new QTabWidget(this);
+    tabs_->setObjectName(QStringLiteral("obs3dgsControlTabs"));
+    tabs_->setDocumentMode(true);
+    root->addWidget(tabs_, 1);
+    const auto makePage = [this](const char *titleKey) {
+      auto *scroll = new QScrollArea(tabs_);
+      scroll->setWidgetResizable(true);
+      scroll->setFrameShape(QFrame::NoFrame);
+      scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+      auto *page = new QWidget(scroll);
+      auto *layout = new QVBoxLayout(page);
+      layout->setContentsMargins(12, 16, 12, 16);
+      layout->setSpacing(14);
+      scroll->setWidget(page);
+      tabs_->addTab(scroll, QString::fromUtf8(obs_module_text(titleKey)));
+      return std::pair{page, layout};
+    };
+    const auto [cameraPage, cameraControls] = makePage("Dock.CameraTab");
+    const auto [scenePage, sceneControls] = makePage("Dock.SceneTab");
+    const auto [presetPage, presetControls] = makePage("Dock.PresetsTab");
+    QWidget *contents = scenePage;
+    QVBoxLayout *controls = sceneControls;
     positionX_ = addScalar(controls, "Transform.PositionX", -1000, 1000, 0.01, false, "position_x");
     positionY_ = addScalar(controls, "Transform.PositionY", -1000, 1000, 0.01, false, "position_y");
     positionZ_ = addScalar(controls, "Transform.PositionZ", -1000, 1000, 0.01, false, "position_z");
@@ -171,21 +172,28 @@ public:
     setI18nKey(resetScene, "Transform.Reset");
     connect(resetScene, &QPushButton::clicked, this, [this] { resetSceneTransform(); });
     lockedControls_.push_back(resetScene);
+    resetScene->setMinimumHeight(34);
     controls->addWidget(resetScene);
-    controls->addWidget(separator(contents));
+    controls->addStretch(1);
 
-    controls->addWidget(sectionLabel("Camera.Title", contents));
-    auto *lensRail = new QHBoxLayout();
+    contents = cameraPage;
+    controls = cameraControls;
+    controls->addWidget(sectionLabel("Dock.LensShortcuts", contents));
+    auto *lensRail = new QGridLayout();
+    lensRail->setHorizontalSpacing(10);
+    lensRail->setVerticalSpacing(8);
+    int lensIndex = 0;
     for (const int focalLength : COMMON_LENS_PRESETS) {
-      auto *button = new QPushButton(QString::number(focalLength), contents);
+      auto *button = new QPushButton(QStringLiteral("%1 mm").arg(focalLength), contents);
+      button->setMinimumHeight(32);
       button->setToolTip(QStringLiteral("%1 mm").arg(focalLength));
       button->setProperty("obs3dgsLensButton", true);
       connect(button, &QPushButton::clicked, this, [this, focalLength] { setDouble("focal_length_mm", focalLength); });
-      lensRail->addWidget(button);
+      lensRail->addWidget(button, lensIndex / 3, lensIndex % 3);
+      lensRail->setColumnStretch(lensIndex % 3, 1);
+      ++lensIndex;
       lockedControls_.push_back(button);
     }
-    auto *millimetres = new QLabel(QStringLiteral("mm"), contents);
-    lensRail->addWidget(millimetres);
     controls->addLayout(lensRail);
     focalLength_ = addScalar(controls, "Camera.FocalLengthShort", 16, 200, 1, false, "focal_length_mm");
     focalLength_->setSuffix(QStringLiteral(" mm"));
@@ -193,15 +201,19 @@ public:
     cameraPitch_ = addScalar(controls, "Camera.Pitch", -89.5, 89.5, 0.1, false, "camera_pitch");
     cameraDistance_ = addScalar(controls, "Camera.Distance", 0.001, 10000, 0.01, true, "camera_distance");
     fov_ = new QLabel(contents);
-    fov_->setStyleSheet(QStringLiteral("color: palette(mid);"));
+    fov_->setWordWrap(true);
     controls->addWidget(fov_);
     auto *cameraButtons = new QGridLayout();
+    cameraButtons->setHorizontalSpacing(10);
+    cameraButtons->setVerticalSpacing(10);
     frameAll_ = new QPushButton(QString::fromUtf8(obs_module_text("Camera.FrameAll")), contents);
     resetCamera_ = new QPushButton(QString::fromUtf8(obs_module_text("Camera.Reset")), contents);
     interactive_ = new QPushButton(QString::fromUtf8(obs_module_text("Camera.Interaction")), contents);
     setI18nKey(frameAll_, "Camera.FrameAll");
     setI18nKey(resetCamera_, "Camera.Reset");
     setI18nKey(interactive_, "Camera.Interaction");
+    for (auto *button : {frameAll_, resetCamera_, interactive_})
+      button->setMinimumHeight(34);
     cameraButtons->addWidget(frameAll_, 0, 0);
     cameraButtons->addWidget(resetCamera_, 0, 1);
     cameraButtons->addWidget(interactive_, 1, 0, 1, 2);
@@ -210,12 +222,22 @@ public:
     connect(interactive_, &QPushButton::clicked, this, [this] { openInteraction(); });
     lockedControls_.insert(lockedControls_.end(), {frameAll_, resetCamera_, interactive_});
     controls->addLayout(cameraButtons);
-    controls->addWidget(separator(contents));
+    controls->addStretch(1);
 
-    controls->addWidget(sectionLabel("Presets.Title", contents));
+    contents = presetPage;
+    controls = presetControls;
+    auto *presetsHint = translatedLabel("Dock.PresetsHint", contents);
+    presetsHint->setWordWrap(true);
+    controls->addWidget(presetsHint);
     presetCombo_ = new QComboBox(contents);
+    presetCombo_->setMinimumHeight(34);
+    presetCombo_->setPlaceholderText(QString::fromUtf8(obs_module_text("Dock.NoPresets")));
+    presetCombo_->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+    presetCombo_->setMinimumContentsLength(12);
     controls->addWidget(presetCombo_);
     auto *presetButtons = new QGridLayout();
+    presetButtons->setHorizontalSpacing(10);
+    presetButtons->setVerticalSpacing(10);
     applyPreset_ = new QPushButton(QString::fromUtf8(obs_module_text("Presets.Apply")), contents);
     savePreset_ = new QPushButton(QString::fromUtf8(obs_module_text("Presets.Save")), contents);
     deletePreset_ = new QPushButton(QString::fromUtf8(obs_module_text("Presets.Delete")), contents);
@@ -226,11 +248,13 @@ public:
     setI18nKey(deletePreset_, "Presets.Delete");
     setI18nKey(previousPreset_, "Presets.Previous");
     setI18nKey(nextPreset_, "Presets.Next");
+    for (auto *button : {applyPreset_, savePreset_, deletePreset_, previousPreset_, nextPreset_})
+      button->setMinimumHeight(34);
     presetButtons->addWidget(applyPreset_, 0, 0);
     presetButtons->addWidget(savePreset_, 0, 1);
-    presetButtons->addWidget(deletePreset_, 0, 2);
-    presetButtons->addWidget(previousPreset_, 1, 0, 1, 2);
-    presetButtons->addWidget(nextPreset_, 1, 2);
+    presetButtons->addWidget(previousPreset_, 1, 0);
+    presetButtons->addWidget(nextPreset_, 1, 1);
+    presetButtons->addWidget(deletePreset_, 2, 1, Qt::AlignRight);
     controls->addLayout(presetButtons);
     connect(applyPreset_, &QPushButton::clicked, this, [this] { applyPreset(); });
     connect(savePreset_, &QPushButton::clicked, this, [this] { savePreset(); });
@@ -240,8 +264,6 @@ public:
     lockedControls_.insert(lockedControls_.end(), {savePreset_, deletePreset_});
 
     controls->addStretch(1);
-    scroll->setWidget(contents);
-    root->addWidget(scroll, 1);
 
     connect(sourceCombo_, &QComboBox::currentIndexChanged, this, [this] { refresh(); });
     connect(quality_, &QComboBox::currentIndexChanged, this, [this] {
@@ -270,6 +292,8 @@ public:
     refreshTimer_.start();
     refresh();
   }
+
+  QSize sizeHint() const override { return {420, 720}; }
 
 private:
   ScalarControl *addScalar(QVBoxLayout *layout, const char *labelKey, double minimum, double maximum, double step,
@@ -307,15 +331,14 @@ private:
       }
     }
 
-    const std::string resolved =
-        sourceCombo_->currentIndex() <= 0 ? selected3dgsUuid() : sourceCombo_->currentData().toString().toStdString();
-    if (resolved != currentSourceId_) {
-      currentSourceId_ = resolved;
-      refreshFromSource();
-    } else {
-      updateStatus(summaries);
-      refreshFromSource(false);
-    }
+    const auto selection = sourceCombo_->currentIndex() <= 0
+                               ? currentSourceSelection()
+                               : SourceSelection{sourceCombo_->currentData().toString().toStdString(), false};
+    const bool sourceChanged = selection.uuid != currentSourceId_;
+    currentSourceId_ = selection.uuid;
+    ambiguousGroup_ = selection.ambiguousGroup;
+    refreshFromSource(sourceChanged);
+    updateStatus(summaries);
   }
 
   void updateStatus(const std::vector<SourceSummary> &summaries)
@@ -323,7 +346,7 @@ private:
     const auto found = std::find_if(summaries.begin(), summaries.end(),
                                     [this](const auto &summary) { return summary.uuid == currentSourceId_; });
     if (found == summaries.end()) {
-      status_->setText(QString::fromUtf8(obs_module_text("Dock.NoSource")));
+      status_->setText(QString::fromUtf8(obs_module_text(ambiguousGroup_ ? "Dock.AmbiguousGroup" : "Dock.NoSource")));
       return;
     }
     const auto displayStatus = effectiveDockStatus(found->ready, found->status);
@@ -343,6 +366,7 @@ private:
     } else {
       status_->setText(QString::fromUtf8(found->status.c_str()));
     }
+    status_->setText(QStringLiteral("%1 · %2").arg(QString::fromUtf8(found->name.c_str()), status_->text()));
   }
 
   void refreshFromSource(bool forceRefresh = true)
@@ -575,6 +599,10 @@ private:
     language_->setItemText(0, QString::fromUtf8(obs_module_text("Language.Auto")));
     language_->setItemText(1, QString::fromUtf8(obs_module_text("Language.Chinese")));
     language_->setItemText(2, QString::fromUtf8(obs_module_text("Language.English")));
+    tabs_->setTabText(0, QString::fromUtf8(obs_module_text("Dock.CameraTab")));
+    tabs_->setTabText(1, QString::fromUtf8(obs_module_text("Dock.SceneTab")));
+    tabs_->setTabText(2, QString::fromUtf8(obs_module_text("Dock.PresetsTab")));
+    presetCombo_->setPlaceholderText(QString::fromUtf8(obs_module_text("Dock.NoPresets")));
     updateFov(focalLength_ ? focalLength_->value() : 35.0);
     QWidget *parent = this;
     while (parent && !qobject_cast<QDockWidget *>(parent))
@@ -615,6 +643,7 @@ private:
   QPushButton *resetCamera_ = nullptr;
   QPushButton *interactive_ = nullptr;
   QComboBox *presetCombo_ = nullptr;
+  QTabWidget *tabs_ = nullptr;
   QPushButton *applyPreset_ = nullptr;
   QPushButton *savePreset_ = nullptr;
   QPushButton *deletePreset_ = nullptr;
@@ -628,6 +657,7 @@ private:
   QTimer refreshTimer_;
   std::string currentSourceId_;
   bool syncing_ = false;
+  bool ambiguousGroup_ = false;
 };
 
 QWidget *dockContents = nullptr;

@@ -27,6 +27,8 @@ target_sources(
     settings-snapshot.hpp
     source.cpp
     source.hpp
+    source-selection.cpp
+    source-selection.hpp
 )
 
 target_link_libraries(

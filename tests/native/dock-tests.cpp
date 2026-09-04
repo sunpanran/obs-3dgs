@@ -65,6 +65,13 @@ int runTests(QApplication &app)
   expect(spin && slider, "the numeric and slider editors must be discoverable");
   if (!spin || !slider)
     return 1;
+  control.resize(300, 100);
+  app.processEvents();
+  expect(spin->geometry().bottom() < slider->geometry().top(),
+         "numeric input must sit above the slider in a narrow control");
+  expect(slider->width() > control.width() * 0.85,
+         "the slider must keep the full row width instead of sharing space with the label");
+  expect(spin->geometry().right() <= control.width(), "numeric input must stay inside a narrow control");
   auto *editor = spin->findChild<QLineEdit *>();
   expect(editor != nullptr, "the spin box must expose its text editor");
   if (!editor)
