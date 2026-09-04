@@ -38,4 +38,19 @@ if(OS_WINDOWS)
   )
   set_tests_properties(obs-3dgs-dock-tests PROPERTIES
     ENVIRONMENT_MODIFICATION "PATH=path_list_prepend:$<TARGET_FILE_DIR:Qt6::Core>")
+elseif(OS_MACOS)
+  # Test executables run outside OBS.app, so its ../Frameworks runpath is absent.
+  # Supply SDK lookup paths to CTest only; never embed build paths in the plugin.
+  set(_obs_3dgs_test_runtime_paths
+    "DYLD_FRAMEWORK_PATH=path_list_prepend:${PROJECT_SOURCE_DIR}/.deps/Frameworks"
+    "DYLD_LIBRARY_PATH=path_list_prepend:${PROJECT_SOURCE_DIR}/.deps/lib")
+  foreach(_prefix IN LISTS CMAKE_PREFIX_PATH)
+    if(EXISTS "${_prefix}/lib")
+      list(APPEND _obs_3dgs_test_runtime_paths
+        "DYLD_FRAMEWORK_PATH=path_list_prepend:${_prefix}/lib"
+        "DYLD_LIBRARY_PATH=path_list_prepend:${_prefix}/lib")
+    endif()
+  endforeach()
+  set_tests_properties(obs-3dgs-native-tests obs-3dgs-dock-tests PROPERTIES
+    ENVIRONMENT_MODIFICATION "${_obs_3dgs_test_runtime_paths}")
 endif()
