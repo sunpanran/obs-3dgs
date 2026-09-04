@@ -6,7 +6,11 @@
 #include "scalar-control.hpp"
 
 #include <QApplication>
+#include <QElapsedTimer>
+#include <QEventLoop>
 #include <QKeyEvent>
+#include <QThread>
+#include <QTimer>
 
 #include <iostream>
 
@@ -21,9 +25,8 @@ void expect(bool condition, const char *message)
 }
 }
 
-int main(int argc, char **argv)
+int runTests(QApplication &app)
 {
-  QApplication app(argc, argv);
   expect(obs3dgs::effectiveDockStatus(true, "error") == "error",
          "a retained valid frame must not hide a replacement error in the Dock");
   expect(obs3dgs::effectiveDockStatus(true, "ready") == "ready",
@@ -44,9 +47,19 @@ int main(int argc, char **argv)
   if (!editor)
     return 1;
   std::cout << "Qt editors initialized\n" << std::flush;
-  spin->setFocus();
-  app.processEvents();
+  QElapsedTimer focusDeadline;
+  focusDeadline.start();
+  do {
+    control.activateWindow();
+    spin->setFocus(Qt::OtherFocusReason);
+    app.processEvents(QEventLoop::AllEvents, 20);
+    if (spin->hasFocus())
+      break;
+    QThread::msleep(10);
+  } while (focusDeadline.elapsed() < 5000);
   expect(spin->hasFocus(), "the test must actually focus the editable field");
+  if (!spin->hasFocus())
+    return 1;
   int writes = 0;
   double writtenValue = 0;
   control.onChanged([&](double value) { ++writes; writtenValue = value; });
@@ -108,4 +121,12 @@ int main(int argc, char **argv)
   if (!failures)
     std::cout << "Dock editing, source isolation and preset synchronization passed\n";
   return failures ? 1 : 0;
+}
+
+int main(int argc, char **argv)
+{
+  QApplication app(argc, argv);
+  // Cocoa completes application/window activation through the running event loop.
+  QTimer::singleShot(0, &app, [&] { app.exit(runTests(app)); });
+  return app.exec();
 }

@@ -74,6 +74,8 @@ jobs:
       - run: cmake --preset macos-ci
       - run: cmake --build --preset macos-ci --parallel
       - run: ctest --test-dir build_macos -C RelWithDebInfo --output-on-failure
+      - name: Repeat native focus regression
+        run: ctest --test-dir build_macos -C RelWithDebInfo -R obs-3dgs-dock-tests --repeat until-fail:5 --output-on-failure
       - name: Native crash diagnostics
         if: failure()
         run: |
