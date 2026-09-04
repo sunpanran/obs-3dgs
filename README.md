@@ -4,7 +4,49 @@
 
 `obs-3dgs` is an open-source OBS input source for using a local 3D Gaussian Splatting scene as a live background. It combines a small native OBS/Qt wrapper with the [Spark](https://github.com/sparkjsdev/spark) WebGL2 renderer, so the project does not reimplement Gaussian parsing, sorting, or LOD.
 
-> Status: `0.1.0-beta.1` candidate. Windows x64 and macOS Universal pass CI builds, automated tests and packaging; Windows also has real OBS regression evidence. The release remains a draft pending Apple M1 hardware and remaining frontend acceptance.
+> Status: `0.1.0-beta.1` candidate; the release is currently a draft. Windows x64 and macOS Universal pass CI builds, automated tests and packaging. Windows has real OBS regression and recording evidence. **macOS has not been tested in OBS on a physical Mac.** Windows frontend manual acceptance is also incomplete; see the [acceptance checklist](docs/manual-acceptance.md).
+
+## Download and install
+
+Published packages for both platforms are available on the same [GitHub Releases page](https://github.com/sunpanran/obs-3dgs/releases). Open a version and expand **Assets**, then select the ZIP for your system:
+
+| System | Plugin package |
+|---|---|
+| Windows x64 | `obs-3dgs-0.1.0-beta.1-windows-x64.zip` |
+| macOS, Apple Silicon or Intel | `obs-3dgs-0.1.0-beta.1-macos-universal.zip` |
+
+Use the named plugin ZIP for installation. GitHub's **Source code** archives are for development. Each plugin ZIP has a matching `.sha256` checksum file and an SBOM. Installing a package requires OBS Studio; Node.js and the build tools below are only needed for development.
+
+### Windows
+
+The current real-machine test environment is Windows 11 x64 with OBS Studio 32.2.2.
+
+1. Close OBS Studio and extract the Windows ZIP.
+2. Paste `C:\ProgramData\obs-studio\plugins\` into File Explorer's address bar. Create the directory if it does not exist.
+3. Copy the entire extracted **`obs-3dgs` folder** into that directory, keeping its `bin` and `data` folders together.
+4. Check that the DLL is at `C:\ProgramData\obs-studio\plugins\obs-3dgs\bin\64bit\obs-3dgs.dll`.
+5. Start OBS, click **Sources → + → 3DGS Scene**, and create a source.
+
+### macOS
+
+The Universal package contains both Apple Silicon and Intel code. **Installation, OBS loading, rendering and performance have not yet been verified on a physical Mac.**
+
+1. Close OBS Studio and extract the macOS ZIP.
+2. In Finder, press **Command + Shift + G** and enter `~/Library/Application Support/obs-studio/plugins/`. Create the directory if it does not exist.
+3. Copy the extracted **`obs-3dgs.plugin` bundle** into that directory.
+4. Start OBS, click **Sources → + → 3DGS Scene**, and create a source.
+
+The beta uses ad-hoc signing and has no Apple Developer ID signature or notarization. macOS may block the first load; see the [installation notes](docs/install.md) and [troubleshooting](docs/troubleshooting.md).
+
+### Load a test scene
+
+1. Download [Knock Community Hall (`.sog`, about 30 MB)](https://media.githubusercontent.com/media/sunpanran/obs-3dgs/main/public/samples/knock-community-hall.sog). The scene is separate from the plugin package; keep the `.sog` file as downloaded.
+2. Open the **3DGS Scene** source properties, select the local scene file and wait for it to load.
+3. Adjust the camera in the source properties or **3DGS Live Control** dock. To use it as a background, place the source below your camera source in OBS.
+
+The sample is **Knock Community Hall** by **scbenoit**, licensed under **CC BY 4.0**; see its [source and attribution](public/samples/README.md).
+
+To update, close OBS and replace the plugin folder or bundle with the newly extracted version. To uninstall, close OBS and remove that folder or bundle. Your scene collections and camera presets are stored by OBS. If the source does not appear or a scene fails to load, follow the [troubleshooting guide](docs/troubleshooting.md) and include your OS, OBS version and GPU in a report.
 
 ## What it does
 

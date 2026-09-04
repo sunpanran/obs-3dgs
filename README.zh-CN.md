@@ -4,7 +4,49 @@
 
 `obs-3dgs` 是一个开源 OBS 输入来源插件，用于把本地 3D Gaussian Splatting 场景作为直播背景。插件采用“小型原生 OBS/Qt 包装层 + [Spark](https://github.com/sparkjsdev/spark) WebGL2 渲染器”的结构，不重复开发高斯格式解析、排序和 LOD 引擎。
 
-> 当前状态：`0.1.0-beta.1` 候选版。Windows x64 与 macOS Universal 已通过 CI 构建、自动测试和打包；Windows 已有真实 OBS 回归证据。Apple M1 真机与剩余前端人工验收尚未完成，发布保持草稿状态。
+> 当前状态：`0.1.0-beta.1` 候选版，发布暂为草稿。Windows x64 与 macOS Universal 已通过 CI 构建、自动测试和打包；Windows 已有真实 OBS 回归与录制证据。**macOS 尚未在真实 Mac 的 OBS 中验证。** Windows 前端人工验收也尚未全部完成，详见[验收清单](docs/manual-acceptance.zh-CN.md)。
+
+## 下载与安装
+
+两个平台的公开安装包统一放在 [GitHub Releases 发布页](https://github.com/sunpanran/obs-3dgs/releases)。打开版本详情，展开 **Assets**，按系统下载对应 ZIP：
+
+| 系统 | 插件安装包 |
+|---|---|
+| Windows x64 | `obs-3dgs-0.1.0-beta.1-windows-x64.zip` |
+| macOS，Apple Silicon 或 Intel | `obs-3dgs-0.1.0-beta.1-macos-universal.zip` |
+
+安装使用上表中的插件 ZIP；GitHub 自动生成的 **Source code** 压缩包供开发使用。每个插件 ZIP 都附有同名 `.sha256` 校验文件与 SBOM。普通安装只需要 OBS Studio；下文的 Node.js 和编译工具仅供开发使用。
+
+### Windows 安装
+
+当前实机测试环境为 Windows 11 x64 + OBS Studio 32.2.2。
+
+1. 关闭 OBS Studio，解压 Windows 安装包。
+2. 在资源管理器地址栏粘贴 `C:\ProgramData\obs-studio\plugins\`。目录不存在时先新建。
+3. 将解压得到的完整 **`obs-3dgs` 文件夹**复制进去，保留其中的 `bin` 和 `data` 目录。
+4. 确认 DLL 的最终路径为 `C:\ProgramData\obs-studio\plugins\obs-3dgs\bin\64bit\obs-3dgs.dll`。
+5. 启动 OBS，点击**来源 → + → 3DGS 场景**，新建来源。
+
+### macOS 安装
+
+Universal 包同时包含 Apple Silicon 和 Intel 架构。**安装、OBS 加载、渲染及性能尚未经过 Mac 实机验证。**
+
+1. 关闭 OBS Studio，解压 macOS 安装包。
+2. 在 Finder 中按 **Command + Shift + G**，输入 `~/Library/Application Support/obs-studio/plugins/`。目录不存在时先新建。
+3. 将解压得到的 **`obs-3dgs.plugin`** 复制进去。
+4. 启动 OBS，点击**来源 → + → 3DGS 场景**，新建来源。
+
+测试包使用 ad-hoc 签名，未经 Apple Developer ID 签名或公证，macOS 可能拦截首次加载。处理方法见[安装说明](docs/install.zh-CN.md)与[故障排查](docs/troubleshooting.zh-CN.md)。
+
+### 加载测试场景
+
+1. 下载 [Knock Community Hall 测试场景（`.sog`，约 30 MB）](https://media.githubusercontent.com/media/sunpanran/obs-3dgs/main/public/samples/knock-community-hall.sog)。场景单独提供；下载后直接使用 `.sog` 文件。
+2. 打开 **3DGS 场景**来源属性，选择本地场景文件，等待加载完成。
+3. 在来源属性或 **3DGS 实时控制** Dock 中调整取景。作为直播背景时，将它放在摄像头来源下方。
+
+测试场景 **Knock Community Hall** 的作者为 **scbenoit**，采用 **CC BY 4.0** 许可；[来源及署名说明](public/samples/README.md)。
+
+更新时关闭 OBS，用新版解压出的文件夹或 bundle 覆盖旧版本；卸载时关闭 OBS 后删除该文件夹或 bundle。场景集合和镜头预设由 OBS 保存。若来源没有出现或场景无法加载，请查看[故障排查](docs/troubleshooting.zh-CN.md)，反馈时附上系统、OBS 版本和 GPU 信息。
 
 ## 已实现能力
 
