@@ -21,3 +21,5 @@ The real libobs API passed 100 duplicate cycles, private UI-state isolation, and
 The [manual checklist](manual-acceptance.md) separately retains actual frontend menus/buttons, full Dock synchronization, Missing Files dialog and physical hotkey binding. API tests do not claim those clicks were performed. The [single-file RAD fixture](benchmarks/data/2026-09-04-windows-rad.json) also passed rendering, truncation and corruption recovery; external multi-file chunks are not covered. Apple M1 must reach average ≥29 FPS and P95 ≤36 ms at Balanced 1080p30.
 
 The RTX 4060 8 GB gate blocks Stable, not the first beta. M2+ 1080p60 is a target, not a beta blocker.
+
+[Restoration and context recovery](benchmarks/2026-09-04-recovery-contracts.md) adds 100 real serialization/restoration cycles, a successful first context recovery and a stable error after the retry limit.

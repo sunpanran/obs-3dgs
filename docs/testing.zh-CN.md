@@ -21,3 +21,5 @@ Web 检查使用 `npm run typecheck`、`npm run lint`、`npm test` 和 `npm run 
 [人工验收清单](manual-acceptance.zh-CN.md)仍保留实际菜单/窗口按钮、Dock 全流程同步、缺失文件窗口和物理热键绑定；自动 API 检查与这些人工动作区分记录。[RAD 单文件样例](benchmarks/data/2026-09-04-windows-rad.json)也已通过成像、截断与损坏恢复；不涵盖外部多文件分块。Apple M1 平衡档 1080p30 必须达到平均 ≥29 FPS、P95 ≤36 ms。
 
 RTX 4060 8 GB 门槛阻止 Stable，不阻止首个 Beta；M2+ 1080p60 是目标，不是 Beta 阻塞项。
+
+[来源恢复与 WebGL 恢复](benchmarks/2026-09-04-recovery-contracts.zh-CN.md)补齐 100 次真实序列化恢复，以及首次上下文丢失自动恢复、再次丢失进入稳定错误状态的直接证据。

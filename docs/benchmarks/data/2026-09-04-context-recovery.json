@@ -1,0 +1,35 @@
+{
+  "startedAt": "2026-09-04T03:58:36.519Z",
+  "checks": {
+    "lossOverlay": true,
+    "firstLossRestored": true,
+    "retryLimitStableError": true,
+    "hostResponsive": true
+  },
+  "failures": [],
+  "source": {
+    "uuid": "c37e2aa1-9afe-48f1-8fdc-2c6b2e1c7f47",
+    "fixture": "format-grid.ply",
+    "width": 640,
+    "height": 360,
+    "sha256": "6a13bfb5f1fe0c8a1c73b73447d6eb7b103a8f5dc9f4bf0b05ece594932cb967"
+  },
+  "settings": {
+    "camera_roll": 0,
+    "camera_yaw": 35,
+    "follow_canvas": false,
+    "lens_preset_mm": 35,
+    "lod_enabled": true,
+    "lod_splat_count": 1000000,
+    "max_sh": 2,
+    "output_height": 360,
+    "output_width": 640,
+    "render_scale": 0.75,
+    "settings_schema_version": 1,
+    "target_fps": 60
+  },
+  "beforeSha256": "460ed6d8960f5ffbf69377fc29390e5ef1c23473ee909ae85f0b2db06c3138fd",
+  "restoredSha256": "460ed6d8960f5ffbf69377fc29390e5ef1c23473ee909ae85f0b2db06c3138fd",
+  "passed": true,
+  "completedAt": "2026-09-04T03:58:42.808Z"
+}

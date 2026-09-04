@@ -21,6 +21,7 @@
     "test:obs:renderer": "node tests/e2e/obs-renderer.mjs",
     "test:obs:formats": "node tests/e2e/obs-formats.mjs",
     "test:obs:server": "node tests/e2e/obs-server.mjs",
+    "test:obs:context": "node tests/e2e/obs-context-recovery.mjs",
     "test:obs:behavior": "node tests/e2e/obs-behavior.mjs",
     "test:obs:missing-file": "node tests/e2e/obs-missing-file.mjs",
     "test:obs:copy-isolation": "node tests/e2e/obs-copy-isolation.mjs",
