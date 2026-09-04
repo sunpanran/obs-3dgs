@@ -22,6 +22,10 @@ cp "${project_root}/dist/sbom.cdx.json" "${stage_root}/obs-3dgs.plugin/Contents/
 codesign --force --deep --sign - "${stage_root}/obs-3dgs.plugin"
 codesign --verify --deep --strict "${stage_root}/obs-3dgs.plugin"
 lipo -verify_arch arm64 x86_64 "${stage_root}/obs-3dgs.plugin/Contents/MacOS/obs-3dgs"
+if otool -L "${stage_root}/obs-3dgs.plugin/Contents/MacOS/obs-3dgs" | grep -E '/opt/homebrew/|/usr/local/Cellar/|/Users/runner/'; then
+  print -u2 "The plugin must not depend on the build machine's private libraries"
+  exit 1
+fi
 ditto -c -k --keepParent "${stage_root}/obs-3dgs.plugin" "${archive_path}"
 shasum -a 256 "${archive_path}" | sed "s#${archive_path}#$(basename "${archive_path}")#" > "${archive_path}.sha256"
 print "Created ${archive_path}"

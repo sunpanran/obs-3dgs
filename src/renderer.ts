@@ -229,7 +229,7 @@ export class Obs3dgsRuntime {
   }
 
   handleContextLost(): void {
-    this.showStatus(this.i18n.t("webglLost"), this.i18n.t("webglRestoring"), 0);
+    this.showStatus(this.i18n.t("webglLost"), this.i18n.t("webglRestoring"), 0, true);
     void this.bridge.send("error", { code: "webgl-context-lost", recoverable: true });
   }
 
@@ -240,7 +240,7 @@ export class Obs3dgsRuntime {
       location.reload();
       return;
     }
-    this.showStatus(this.i18n.t("failed"), this.i18n.t("webglLost"), 0);
+    this.showStatus(this.i18n.t("failed"), this.i18n.t("webglLost"), 0, true);
     void this.bridge.send("error", { code: "webgl-context-restore-failed", recoverable: false });
   }
 
@@ -252,10 +252,7 @@ export class Obs3dgsRuntime {
     } else if (command === "reload" && isActionAllowed("reloadAsset", this.state.safety.liveLock)) {
       void this.loadAsset(this.state.asset.localUrl, true);
     } else if (command === "showError") {
-      // Native validation errors already remain visible in properties and the Dock.
-      // Preserve the live output when the rejected replacement has a valid predecessor.
-      if (this.activeMesh) this.elements.status.hidden = true;
-      else this.showStatus(this.i18n.t("failed"), typeof payload.message === "string" ? payload.message.slice(0, 320) : "", 0);
+      this.showStatus(this.i18n.t("failed"), typeof payload.message === "string" ? payload.message.slice(0, 320) : "", 0);
     }
   }
 
@@ -649,8 +646,10 @@ export class Obs3dgsRuntime {
     }, 1_200);
   }
 
-  private showStatus(title: string, detail: string, progress: number): void {
-    this.elements.status.hidden = false;
+  private showStatus(title: string, detail: string, progress: number, forceOverlay = false): void {
+    // Staging and recoverable errors belong in native controls while an old scene
+    // remains usable. A lost GPU context must still display its fatal/recovery status.
+    this.elements.status.hidden = this.activeMesh !== null && !forceOverlay;
     this.elements.statusTitle.textContent = title;
     this.elements.statusDetail.textContent = detail;
     const bar = this.elements.progress.querySelector("i");

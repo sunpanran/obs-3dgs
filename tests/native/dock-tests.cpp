@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "dock-preset-state.hpp"
+#include "dock-status.hpp"
 #include "pending-dock-edits.hpp"
 #include "scalar-control.hpp"
 
@@ -23,6 +24,12 @@ void expect(bool condition, const char *message)
 int main(int argc, char **argv)
 {
   QApplication app(argc, argv);
+  expect(obs3dgs::effectiveDockStatus(true, "error") == "error",
+         "a retained valid frame must not hide a replacement error in the Dock");
+  expect(obs3dgs::effectiveDockStatus(true, "ready") == "ready",
+         "a loaded scene without an error should show its live frame rate");
+  expect(obs3dgs::effectiveDockStatus(false, "loading") == "loading",
+         "loading progress should remain available before a scene is ready");
   obs3dgs::ScalarControl control(QStringLiteral("Focal length"), "Camera.FocalLength", 16, 200, 1, false);
   control.setValue(35, true);
   control.show();

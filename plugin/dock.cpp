@@ -4,6 +4,7 @@
 
 #include "lens-presets.hpp"
 #include "dock-preset-state.hpp"
+#include "dock-status.hpp"
 #include "pending-dock-edits.hpp"
 #include "scalar-control.hpp"
 #include "source.hpp"
@@ -323,18 +324,19 @@ private:
       status_->setText(QString::fromUtf8(obs_module_text("Dock.NoSource")));
       return;
     }
-    if (found->ready) {
+    const auto displayStatus = effectiveDockStatus(found->ready, found->status);
+    if (displayStatus == "ready") {
       status_->setText(QString::fromUtf8(obs_module_text("Dock.ReadyStatus")).arg(found->fps, 0, 'f', 1));
-    } else if (found->status == "loading") {
+    } else if (displayStatus == "loading") {
       status_->setText(
           QString::fromUtf8(obs_module_text("Dock.LoadingStatus")).arg(found->progress * 100.0, 0, 'f', 0));
-    } else if (found->status == "waiting") {
+    } else if (displayStatus == "waiting") {
       status_->setText(QString::fromUtf8(obs_module_text("Dock.Waiting")));
-    } else if (found->status == "runtime-ready") {
+    } else if (displayStatus == "runtime-ready") {
       status_->setText(QString::fromUtf8(obs_module_text("Dock.RuntimeReady")));
-    } else if (found->status == "large-file-warning") {
+    } else if (displayStatus == "large-file-warning") {
       status_->setText(QString::fromUtf8(obs_module_text("Dock.LargeFileWarning")));
-    } else if (found->status == "error") {
+    } else if (displayStatus == "error") {
       status_->setText(QString::fromUtf8(obs_module_text("Dock.Error")));
     } else {
       status_->setText(QString::fromUtf8(found->status.c_str()));

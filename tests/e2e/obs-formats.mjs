@@ -44,6 +44,8 @@ try {
       assert(ready, "Valid asset did not become ready");
       row.loadMs = performance.now() - start;
       await delay(1500);
+      row.settings = (await client.request("GetInputSettings", { inputUuid })).inputSettings;
+      delete row.settings.asset_path;
       const screenshot = async (name) => {
         const response = await client.request("GetSourceScreenshot", { sourceUuid: inputUuid, imageFormat: "png", imageWidth: 640, imageHeight: 360 });
         const data = Buffer.from(response.imageData.split(",")[1], "base64");
@@ -60,6 +62,9 @@ try {
         await writeFile(invalidPath, mutation === "truncated" ? bytes.subarray(0, truncatedLength) : Buffer.alloc(17, 0xFF));
         const previousLog = (await readFile(logPath, "utf8")).length;
         await client.request("SetInputSettings", { inputUuid, inputSettings: { asset_path: invalidPath }, overlay: true });
+        await delay(100);
+        const duringSha256 = await screenshot(`during-${mutation}-${filename}.png`);
+        assert.equal(duringSha256, row.screenshotSha256, `${mutation} replacement obscured the live scene during recovery`);
         let restored = false;
         for (let attempt = 0; attempt < 180; attempt++) {
           await delay(250);

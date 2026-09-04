@@ -10,7 +10,7 @@ Environment: isolated portable OBS 32.2.2 on Windows, RTX 4090, Spark 2.1.0, Thr
 
 Native validation errors previously covered an otherwise intact live scene with a persistent error card. With an existing valid model, the output now stays intact and the native properties/Dock retain the error; an empty source still shows an error card.
 
-Reproduce with `format-grid.ply`, a new 1280×720 source, default camera with automatic framing, Balanced quality, and a replacement truncated to half its bytes. Screenshots are 640×360 source captures.
+Reproduce with `format-grid.ply` prefilled by the test script in a new 1280×720 source: target (0,0,0), yaw 35°, pitch -12°, roll 0°, distance 4.2, focal length 35 mm, default scene transform, and Balanced quality. Replace it with the first half of its bytes. Screenshots are 640×360 source captures.
 
 | Before | After |
 |---|---|
