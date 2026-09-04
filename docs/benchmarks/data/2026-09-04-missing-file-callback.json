@@ -1,0 +1,148 @@
+{
+  "checks": [
+    {
+      "name": "relink: one missing file is registered",
+      "passed": true
+    },
+    {
+      "name": "relink: native dispatcher returned without crashing OBS",
+      "passed": true
+    },
+    {
+      "name": "relink: relocated scene reaches renderer-ready state",
+      "passed": true
+    },
+    {
+      "name": "relink: replacement path is committed",
+      "passed": true
+    },
+    {
+      "name": "relink: camera and exposure are preserved",
+      "passed": true
+    },
+    {
+      "name": "relink: relink does not reframe the saved camera",
+      "passed": true
+    },
+    {
+      "name": "relink: saved presets are preserved",
+      "passed": true
+    },
+    {
+      "name": "relink: live lock is preserved",
+      "passed": true
+    },
+    {
+      "name": "relink: source identity is preserved",
+      "passed": true
+    },
+    {
+      "name": "relink: private UI state is preserved",
+      "passed": true
+    },
+    {
+      "name": "relink: replacement path is serialized",
+      "passed": true
+    },
+    {
+      "name": "clear: one missing file is registered",
+      "passed": true
+    },
+    {
+      "name": "clear: native dispatcher returned without crashing OBS",
+      "passed": true
+    },
+    {
+      "name": "clear: replacement path is committed",
+      "passed": true
+    },
+    {
+      "name": "clear: camera and exposure are preserved",
+      "passed": true
+    },
+    {
+      "name": "clear: relink does not reframe the saved camera",
+      "passed": true
+    },
+    {
+      "name": "clear: saved presets are preserved",
+      "passed": true
+    },
+    {
+      "name": "clear: live lock is preserved",
+      "passed": true
+    },
+    {
+      "name": "clear: source identity is preserved",
+      "passed": true
+    },
+    {
+      "name": "clear: private UI state is preserved",
+      "passed": true
+    },
+    {
+      "name": "clear: replacement path is serialized",
+      "passed": true
+    },
+    {
+      "name": "locked-relink: one missing file is registered",
+      "passed": true
+    },
+    {
+      "name": "locked-relink: native dispatcher returned without crashing OBS",
+      "passed": true
+    },
+    {
+      "name": "locked-relink: relocated scene reaches renderer-ready state",
+      "passed": true
+    },
+    {
+      "name": "locked-relink: replacement path is committed",
+      "passed": true
+    },
+    {
+      "name": "locked-relink: camera and exposure are preserved",
+      "passed": true
+    },
+    {
+      "name": "locked-relink: relink does not reframe the saved camera",
+      "passed": true
+    },
+    {
+      "name": "locked-relink: saved presets are preserved",
+      "passed": true
+    },
+    {
+      "name": "locked-relink: live lock is preserved",
+      "passed": true
+    },
+    {
+      "name": "locked-relink: source identity is preserved",
+      "passed": true
+    },
+    {
+      "name": "locked-relink: private UI state is preserved",
+      "passed": true
+    },
+    {
+      "name": "locked-relink: replacement path is serialized",
+      "passed": true
+    },
+    {
+      "name": "locked-relink: ordinary edits remain locked after recovery",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "failures": 0,
+  "dispatcher": "obs_missing_file_issue_callback",
+  "environment": {
+    "obsVersion": "32.2.2",
+    "windowsBuild": "26200",
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "renderer": "ANGLE / Direct3D 11"
+  },
+  "testedDllSHA256": "e3a328bda4133e6183e7182a41f184dd9e58f18772e286f4321493a6b80be9db",
+  "fixtureSHA256": "6a13bfb5f1fe0c8a1c73b73447d6eb7b103a8f5dc9f4bf0b05ece594932cb967",
+  "completedAt": "2026-09-04T14:30:55.6543254+08:00"
+}

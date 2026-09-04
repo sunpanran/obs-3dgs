@@ -9,6 +9,7 @@ import { sanitizeErrorText } from "./error-text";
 import { FrameRecorder } from "./frame-recorder";
 import { I18n } from "./i18n";
 import { withoutStaleCameraEcho } from "./interaction-state";
+import { isMissingFileRecovery } from "./missing-file-recovery";
 import type { BridgeMessage, CoordinatePreset, SourceState } from "./protocol";
 import { DEFAULT_STATE, RevisionGate } from "./protocol";
 import { PointerCamera } from "./pointer-camera";
@@ -208,7 +209,9 @@ export class Obs3dgsRuntime {
     );
     const next = normalizeState(update, previous);
     const presetBypass = allowedMutation === "applyPreset" && this.onlyCameraChanged(previous, next);
-    if (previous.safety.liveLock && next.safety.liveLock && this.hasLockedChanges(previous, next) && !presetBypass) {
+    const missingFileRecovery = isMissingFileRecovery(previous, next, allowedMutation);
+    if (previous.safety.liveLock && next.safety.liveLock && this.hasLockedChanges(previous, next)
+      && !presetBypass && !missingFileRecovery) {
       this.showTransientStatus(this.i18n.t("locked"));
       return;
     }

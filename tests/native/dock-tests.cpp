@@ -2,6 +2,7 @@
 
 #include "dock-preset-state.hpp"
 #include "dock-status.hpp"
+#include "dock-visibility.hpp"
 #include "pending-dock-edits.hpp"
 #include "scalar-control.hpp"
 
@@ -9,6 +10,8 @@
 #include <QElapsedTimer>
 #include <QEventLoop>
 #include <QKeyEvent>
+#include <QPushButton>
+#include <QVBoxLayout>
 #include <QThread>
 #include <QTimer>
 
@@ -27,6 +30,26 @@ void expect(bool condition, const char *message)
 
 int runTests(QApplication &app)
 {
+  {
+    QDockWidget dock;
+    auto *contents = new QWidget();
+    auto *layout = new QVBoxLayout(contents);
+    auto *savePreset = new QPushButton(QStringLiteral("Save current preset"), contents);
+    layout->addWidget(savePreset);
+    dock.setWidget(contents);
+    dock.hide();
+    contents->hide();
+    obs3dgs::showDockContents(contents);
+    app.processEvents();
+    expect(dock.isVisible(), "opening the control panel must reveal its outer dock");
+    expect(contents->isVisible() && savePreset->isVisible(),
+           "opening the control panel must reveal explicitly hidden content and preset buttons");
+    dock.hide();
+    dock.show();
+    app.processEvents();
+    expect(savePreset->isVisible(), "closing and reopening the OBS dock must preserve visible controls");
+  }
+  std::cout << "Dock visibility checks completed\n" << std::flush;
   expect(obs3dgs::effectiveDockStatus(true, "error") == "error",
          "a retained valid frame must not hide a replacement error in the Dock");
   expect(obs3dgs::effectiveDockStatus(true, "ready") == "ready",

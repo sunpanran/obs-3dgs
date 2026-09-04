@@ -10,6 +10,8 @@ Web 检查使用 `npm run typecheck`、`npm run lint`、`npm test` 和 `npm run 
 
 ## 已有证据
 
+[Windows 前端恢复回归](benchmarks/2026-09-04-windows-frontend-recovery.zh-CN.md)修复人工验收发现的 Dock 内容隐藏和缺失文件“应用”崩溃，并通过真实缺失文件回调验证普通/锁定恢复、机位保留及后续锁定保护；用户窗口操作复测仍待反馈。
+
 当前仅渲染器预检记录在 [Windows Web 渲染预检](benchmarks/2026-09-03-windows-web-preflight.zh-CN.md)，它不能代替下方 OBS 集成门槛。
 
 分类化来源属性页已通过真实 OBS 探索性冒烟测试，记录见 [Windows OBS 属性页冒烟测试](benchmarks/2026-09-03-windows-obs-properties-smoke.zh-CN.md)。

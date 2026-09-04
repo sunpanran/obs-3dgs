@@ -16,6 +16,8 @@
 #include <QCheckBox>
 #include <QAbstractButton>
 #include <QComboBox>
+#include "dock-visibility.hpp"
+
 #include <QDockWidget>
 #include <QDoubleSpinBox>
 #include <QFormLayout>
@@ -647,17 +649,7 @@ void destroyControlDock()
 
 void showControlDock()
 {
-  if (!dockContents)
-    return;
-  QWidget *widget = dockContents;
-  while (widget && !qobject_cast<QDockWidget *>(widget))
-    widget = widget->parentWidget();
-  if (widget) {
-    widget->show();
-    widget->raise();
-  } else {
-    dockContents->show();
-  }
+  showDockContents(dockContents);
 }
 
 } // namespace obs3dgs

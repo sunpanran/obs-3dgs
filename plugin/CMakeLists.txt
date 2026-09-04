@@ -11,6 +11,7 @@ target_sources(
     dock.hpp
     dock-preset-state.hpp
     dock-status.hpp
+    dock-visibility.hpp
     lens-presets.hpp
     localization.cpp
     localization.hpp

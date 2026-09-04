@@ -19,9 +19,8 @@ bool obs_module_load()
   obs3dgs::Localization::instance().initialize();
   obs3dgs::registerSource();
   QWidget *dock = obs3dgs::createControlDock();
-  if (obs_frontend_add_dock_by_id("obs-3dgs-control-dock", obs3dgs::text("Dock.Title"), dock))
-    dock->setVisible(false);
-  else
+  // OBS hides the outer dock until it is opened; keep its contents available.
+  if (!obs_frontend_add_dock_by_id("obs-3dgs-control-dock", obs3dgs::text("Dock.Title"), dock))
     blog(LOG_WARNING, "[obs-3dgs] Unable to register control dock");
   blog(LOG_INFO, "[obs-3dgs] Loaded version %s", OBS_3DGS_VERSION);
   return true;

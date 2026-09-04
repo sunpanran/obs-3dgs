@@ -42,7 +42,9 @@ The beta uses ad-hoc signing and has no Apple Developer ID signature or notariza
 
 1. Download [Knock Community Hall (`.sog`, about 30 MB)](https://media.githubusercontent.com/media/sunpanran/obs-3dgs/main/public/samples/knock-community-hall.sog). The scene is separate from the plugin package; keep the `.sog` file as downloaded.
 2. Open the **3DGS Scene** source properties, select the local scene file and wait for it to load.
-3. Adjust the camera in the source properties or **3DGS Live Control** dock. To use it as a background, place the source below your camera source in OBS.
+3. Click **Open live control dock** in the source properties, then click OK to close the properties window and adjust the camera in **3DGS Live Control**. To use it as a background, place the source below your camera source in OBS.
+
+To save a camera view, scroll down in the dock to **Camera presets → Save current** and enter a name. Select a saved view and click Apply, or bind **3DGS: camera preset 1–4** for that source under **OBS Settings → Hotkeys**. The millimetre shortcuts in the camera settings change focal length; complete camera views are saved in the dock.
 
 The sample is **Knock Community Hall** by **scbenoit**, licensed under **CC BY 4.0**; see its [source and attribution](public/samples/README.md).
 

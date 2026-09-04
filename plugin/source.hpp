@@ -83,8 +83,8 @@ private:
   void processRuntimeEvents();
   void processRuntimeEvent(const nlohmann::json &event);
   void updateRuntimeCamera(const nlohmann::json &camera);
-  void sendState(bool allowLockedCameraPreset = false);
-  void queueState(bool allowLockedCameraPreset = false);
+  void sendState(bool allowLockedCameraPreset = false, bool allowMissingFileRecovery = false);
+  void queueState(bool allowLockedCameraPreset = false, bool allowMissingFileRecovery = false);
   void sendVisibility(bool visible);
   void sendErrorStatus(const std::string &message);
   void sendJavascript(const nlohmann::json &message);
@@ -98,6 +98,7 @@ private:
                                    obs_data_t *settings);
   static bool advancedCameraModified(void *data, obs_properties_t *properties, obs_property_t *property,
                                      obs_data_t *settings);
+  static void missingFileResolved(void *data, const char *newPath, void *privateData);
   bool isLiveLocked() const;
   bool commandAllowed(const std::string &command) const;
   static std::string effectiveLocale(obs_data_t *settings);
@@ -129,6 +130,7 @@ private:
   std::atomic_bool runtimeReady_{false};
   std::atomic_bool bridgeReady_{false};
   OneShotAuthorization lockedUpdateAuthorization_;
+  OneShotAuthorization missingFileRecovery_;
   bool restoringInitialSettings_ = true;
   bool frameOnNextLoad_ = false;
   bool assetLoadPending_ = false;
@@ -139,6 +141,7 @@ private:
   std::uint32_t browserFps_ = 0;
   std::atomic_bool statePending_{false};
   std::atomic_bool presetBypassPending_{false};
+  std::atomic_bool missingFileRecoveryPending_{false};
   std::chrono::steady_clock::time_point lastStateSent_{};
   mutable std::mutex statusMutex_;
 

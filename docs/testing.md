@@ -10,6 +10,8 @@ Publication of `0.1.0-beta.1` awaits the seven Windows frontend checks in the [m
 
 ## Recorded evidence
 
+[Windows frontend recovery regression](benchmarks/2026-09-04-windows-frontend-recovery.md) fixes the manually reported hidden dock contents and Missing Files Apply crash. The real missing-file callback now covers normal/locked recovery, camera preservation and continued protection of ordinary edits; the user's frontend retest remains pending.
+
 The current renderer-only preflight is recorded in [Windows Web renderer preflight](benchmarks/2026-09-03-windows-web-preflight.md). It does not replace the OBS integration gate below.
 
 The categorized source-properties UI passed a real OBS exploratory smoke test recorded in [Windows OBS properties smoke test](benchmarks/2026-09-03-windows-obs-properties-smoke.md).

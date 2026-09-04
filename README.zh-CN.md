@@ -42,7 +42,9 @@ Universal 包同时包含 Apple Silicon 和 Intel 架构。**安装、OBS 加载
 
 1. 下载 [Knock Community Hall 测试场景（`.sog`，约 30 MB）](https://media.githubusercontent.com/media/sunpanran/obs-3dgs/main/public/samples/knock-community-hall.sog)。场景单独提供；下载后直接使用 `.sog` 文件。
 2. 打开 **3DGS 场景**来源属性，选择本地场景文件，等待加载完成。
-3. 在来源属性或 **3DGS 实时控制** Dock 中调整取景。作为直播背景时，将它放在摄像头来源下方。
+3. 在来源属性中点击 **打开实时控制面板**，再点“确定”关闭属性窗口，即可使用 **3DGS 实时控制** Dock 调整取景。作为直播背景时，将它放在摄像头来源下方。
+
+保存机位：在 Dock 中向下滚动到 **镜头预设 → 保存当前**，输入名称。保存后可选中预设并点击“应用”，或在 **OBS 设置 → 热键**中找到对应来源的 **3DGS：镜头预设 1–4** 来绑定按键。相机分类中的毫米数快捷项用于切换焦段；完整机位在 Dock 中保存。
 
 测试场景 **Knock Community Hall** 的作者为 **scbenoit**，采用 **CC BY 4.0** 许可；[来源及署名说明](public/samples/README.md)。
 

@@ -304,17 +304,6 @@ bool lensPresetModified(void *privateData, obs_properties_t *properties, obs_pro
   return refreshDerivedCamera(privateData, properties, property, settings);
 }
 
-void missingFileResolved(void *sourcePointer, const char *newPath, void *)
-{
-  auto *source = static_cast<obs_source_t *>(sourcePointer);
-  if (!source || !newPath)
-    return;
-  obs_data_t *settings = obs_source_get_settings(source);
-  obs_data_set_string(settings, KEY_ASSET, newPath);
-  obs_source_update(source, settings);
-  obs_data_release(settings);
-}
-
 void procCommand(void *data, calldata_t *calldata)
 {
   auto *self = static_cast<Obs3dgsSource *>(data);
@@ -405,7 +394,8 @@ Obs3dgsSource::~Obs3dgsSource()
 void Obs3dgsSource::update(obs_data_t *settings)
 {
   obs_data_set_int(settings, KEY_SCHEMA, SETTINGS_SCHEMA_VERSION);
-  const bool authorizedLockedUpdate = lockedUpdateAuthorization_.consume();
+  const bool recoveringMissingFile = missingFileRecovery_.consume();
+  const bool authorizedLockedUpdate = lockedUpdateAuthorization_.consume() || recoveringMissingFile;
   if (committedSettings_ && isLiveLocked() && obs_data_get_bool(settings, KEY_LIVE_LOCK) && !authorizedLockedUpdate) {
     applyEffectiveSettings(settings, committedSettings_);
   }
@@ -434,7 +424,7 @@ void Obs3dgsSource::update(obs_data_t *settings)
       }
       progress_ = 0.0;
       runtimeReady_ = false;
-      frameOnNextLoad_ = !restoringInitialSettings_;
+      frameOnNextLoad_ = !restoringInitialSettings_ && !recoveringMissingFile;
       assetLoadPending_ = true;
     } else {
       {
@@ -511,7 +501,7 @@ void Obs3dgsSource::update(obs_data_t *settings)
       (!browser_ || browserWidth_ != width() || browserHeight_ != height() || browserFps_ != targetFps))
     createOrUpdateBrowser();
   if (bridgeReady_.load() && runtimeSettingsChanged)
-    queueState(authorizedLockedUpdate);
+    queueState(authorizedLockedUpdate && !recoveringMissingFile, recoveringMissingFile);
 }
 
 void Obs3dgsSource::videoRender()
@@ -535,8 +525,9 @@ void Obs3dgsSource::videoTick(float)
   const auto now = std::chrono::steady_clock::now();
   if (bridgeReady_.load() && statePending_.load() && now - lastStateSent_ >= std::chrono::milliseconds(34)) {
     const bool presetBypass = presetBypassPending_.exchange(false);
+    const bool missingFileRecovery = missingFileRecoveryPending_.exchange(false);
     statePending_ = false;
-    sendState(presetBypass);
+    sendState(presetBypass, missingFileRecovery);
     lastStateSent_ = now;
   }
 }
@@ -913,6 +904,23 @@ obs_properties_t *Obs3dgsSource::properties()
   liveLockModified(this, properties, liveLock, propertySettings);
   obs_data_release(propertySettings);
   return properties;
+}
+
+void Obs3dgsSource::missingFileResolved(void *data, const char *newPath, void *)
+{
+  // libobs passes source->context.data here, not the obs_source_t handle.
+  auto *self = static_cast<Obs3dgsSource *>(data);
+  if (!self || !newPath)
+    return;
+  obs_data_t *settings = obs_source_get_settings(self->source_);
+  if (self->committedSettings_)
+    applyEffectiveSettings(settings, self->committedSettings_);
+  obs_data_set_string(settings, KEY_ASSET, newPath);
+  // The Missing Files dialog explicitly authorizes this repair. Carry it over
+  // the deferred video-source update without unlocking later ordinary edits.
+  self->missingFileRecovery_.grant();
+  obs_source_update(self->source_, settings);
+  obs_data_release(settings);
 }
 
 obs_missing_files_t *Obs3dgsSource::missingFiles()
@@ -1471,7 +1479,7 @@ void Obs3dgsSource::updateRuntimeCamera(const nlohmann::json &camera)
   obs_source_update(source_, committedSettings_);
 }
 
-void Obs3dgsSource::sendState(bool allowLockedCameraPreset)
+void Obs3dgsSource::sendState(bool allowLockedCameraPreset, bool allowMissingFileRecovery)
 {
   if (!browser_ || !committedSettings_)
     return;
@@ -1537,7 +1545,9 @@ void Obs3dgsSource::sendState(bool allowLockedCameraPreset)
        }},
       {"safety", {{"liveLock", obs_data_get_bool(committedSettings_, KEY_LIVE_LOCK)}}},
   };
-  if (allowLockedCameraPreset)
+  if (allowMissingFileRecovery)
+    payload["_allowedMutation"] = "recoverMissingFile";
+  else if (allowLockedCameraPreset)
     payload["_allowedMutation"] = "applyPreset";
 
   sendJavascript({
@@ -1549,10 +1559,12 @@ void Obs3dgsSource::sendState(bool allowLockedCameraPreset)
   });
 }
 
-void Obs3dgsSource::queueState(bool allowLockedCameraPreset)
+void Obs3dgsSource::queueState(bool allowLockedCameraPreset, bool allowMissingFileRecovery)
 {
   if (allowLockedCameraPreset)
     presetBypassPending_ = true;
+  if (allowMissingFileRecovery)
+    missingFileRecoveryPending_ = true;
   statePending_ = true;
 }
 
