@@ -32,3 +32,5 @@ Run the dedicated OBS instance with `--remote-debugging-port=9223 --remote-debug
 Valid RAD rendering remains unverified. Small fixtures do not cover all exporter variants. Component tests do not replace frontend Duplicate, property Cancel, hotkey-binding, or full Dock manual acceptance. Apple M1 still requires hardware testing.
 
 References: [OBS CEF debugging](https://github.com/obsproject/obs-studio/wiki/Browser-source-development-and-debugging), [SparkRenderer](https://sparkjs.dev/docs/spark-renderer/).
+
+The [wide and close-view 30-minute recording gates](2026-09-04-windows-renderer-performance.md) have both passed. The [native contract report](data/2026-09-04-native-contracts.json) additionally covers 100 real source duplicates, private navigation-state copying/isolation, and the clear + update cancellation path used by OBS properties. Load `tests/e2e/obs-native-contracts.lua` only in a dedicated profile after creating `output/obs-native-contracts/`.

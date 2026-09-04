@@ -15,3 +15,5 @@ The following components are used by `obs-3dgs`:
 The complete MIT license texts for the five bundled libraries are adjacent to this file. OBS and Qt binaries are not redistributed by this repository's plugin ZIP; the plugin uses the copies supplied by the user's OBS installation.
 
 The official OBS Plugin Template build modules were adapted under GPL-2.0.
+
+Packaged documentation includes rendered benchmark images of Knock Community Hall by scbenoit (CC BY 4.0). Their source, license and modification credits are preserved in `docs/benchmarks/assets/ATTRIBUTION.md` inside each package. The model itself is not bundled.

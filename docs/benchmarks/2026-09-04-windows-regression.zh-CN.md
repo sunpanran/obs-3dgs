@@ -32,7 +32,9 @@
 - 10 秒录制预检：平均 60.0020 FPS，P95 16.7 ms，生成有效 MKV，停止后恢复测试实例原设置。
 - 相机以 20 Hz 原生参数更新做 ±10° 正弦水平运动；JSON 保留精确基准姿态、场景 SHA-256、输出尺寸和画质参数。
 
-[渲染预检 JSON](data/2026-09-04-renderer-preflight.json)、[录制预检 JSON](data/2026-09-04-renderer-recording-preflight.json)。30 分钟录制门槛应单独读取长时报告；以上短测不能替代它。
+[渲染预检 JSON](data/2026-09-04-renderer-preflight.json)、[录制预检 JSON](data/2026-09-04-renderer-recording-preflight.json)。[远景与近景长时报告](2026-09-04-windows-renderer-performance.zh-CN.md)已分别完成 30 分钟录制和逐帧验证；以上短测不作为长时结果替代。
+
+此外，[原生契约测试](data/2026-09-04-native-contracts.json)通过 100 次真正的 `obs_source_duplicate`、私有页签/高级参数状态复制与隔离，以及 OBS 属性取消所用的 clear + update 调用路径。复现脚本为 `tests/e2e/obs-native-contracts.lua`，只加载到专用测试配置，并先建立 `output/obs-native-contracts/` 目录。
 
 ## 复现命令与边界
 

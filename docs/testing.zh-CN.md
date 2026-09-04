@@ -16,6 +16,8 @@ Web 检查使用 `npm run typecheck`、`npm run lint`、`npm test` 和 `npm run 
 
 [2026-09-04 续接回归](benchmarks/2026-09-04-windows-regression.zh-CN.md)补齐七种格式的成像/截断/损坏检查、本地 HTTP 边界、Dock 编辑组件与角度往返测试；CEF 短测证实逐帧 P95 16.7 ms，并验证静止后无新增重绘和排序。长时录制与逐帧联合验证独立记录，不能用短测替代。
 
-Beta 剩余验收包括前端“粘贴（副本）”动作及私有界面状态复制、属性页取消、Dock 全流程同步、OBS“缺失文件”前端对话框和人工设置热键绑定。RAD 有效样例尚未完成渲染验证。Apple M1 平衡档 1080p30 必须达到平均 ≥29 FPS、P95 ≤36 ms。
+真实 libobs API 的 100 次复制、私有 UI 状态隔离，以及 OBS 属性取消所用的调用路径已通过 [原生契约回归](benchmarks/data/2026-09-04-native-contracts.json)。[长时逐帧与录制](benchmarks/2026-09-04-windows-renderer-performance.zh-CN.md)保留完整原始帧数据。
+
+[人工验收清单](manual-acceptance.zh-CN.md)仍保留实际菜单/窗口按钮、Dock 全流程同步、缺失文件窗口和物理热键绑定；自动 API 检查与这些人工动作区分记录。RAD 有效样例尚未完成渲染验证。Apple M1 平衡档 1080p30 必须达到平均 ≥29 FPS、P95 ≤36 ms。
 
 RTX 4060 8 GB 门槛阻止 Stable，不阻止首个 Beta；M2+ 1080p60 是目标，不是 Beta 阻塞项。

@@ -4,7 +4,7 @@
 
 `obs-3dgs` 是一个开源 OBS 输入来源插件，用于把本地 3D Gaussian Splatting 场景作为直播背景。插件采用“小型原生 OBS/Qt 包装层 + [Spark](https://github.com/sparkjsdev/spark) WebGL2 渲染器”的结构，不重复开发高斯格式解析、排序和 LOD 引擎。
 
-> 当前状态：正在开发 `0.1.0-beta.1`。Windows 版本已经可以在本地编译；macOS Universal 仍需 CI 构建及 Apple Silicon 真机验证。现阶段不要直接用于不可重来的正式直播。
+> 当前状态：`0.1.0-beta.1` 候选版。Windows x64 与 macOS Universal 已通过 CI 构建、自动测试和打包；Windows 已有真实 OBS 回归证据。Apple M1 真机与剩余前端人工验收尚未完成，发布保持草稿状态。
 
 ## 已实现能力
 
@@ -17,6 +17,8 @@
 - 只通过带随机令牌的本机回环 HTTP 地址映射用户明确选择的文件。
 
 正式格式为 PLY、Compressed PLY、SPZ、SOG；SPLAT、KSPLAT、ZIP、RAD 在首个 Beta 中标为实验格式。
+
+PLY 当前接受 binary little-endian 编码。七种格式已有实机加载/错误恢复证据；RAD 的有效文件渲染仍待验证。
 
 ## 支持环境
 

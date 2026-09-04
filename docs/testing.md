@@ -16,6 +16,8 @@ The automated [Windows OBS missing-file recovery](benchmarks/2026-09-03-windows-
 
 The [2026-09-04 continuation regression](benchmarks/2026-09-04-windows-regression.md) adds seven-format rendering/truncation/corruption checks, live HTTP boundaries, Dock edit-component tests, and angle round trips. A CEF preflight measured 16.7 ms frame-interval P95 and verified no draws/sorts while static. The combined long recording/frame test is a separate gate.
 
-Remaining Beta acceptance includes the frontend Paste (Duplicate) action and private UI-state copy, property cancel, full Dock synchronization, the frontend Missing Files dialog, and manual hotkey binding. Valid RAD rendering remains unverified. Apple M1 must reach average ≥29 FPS and P95 ≤36 ms at Balanced 1080p30.
+The real libobs API passed 100 duplicate cycles, private UI-state isolation, and the same cancellation calls used by OBS properties. [Native contract report](benchmarks/data/2026-09-04-native-contracts.json). [Long frame/recording evidence](benchmarks/2026-09-04-windows-renderer-performance.md) retains raw frame data.
+
+The [manual checklist](manual-acceptance.md) separately retains actual frontend menus/buttons, full Dock synchronization, Missing Files dialog and physical hotkey binding. API tests do not claim those clicks were performed. Valid RAD rendering remains unverified. Apple M1 must reach average ≥29 FPS and P95 ≤36 ms at Balanced 1080p30.
 
 The RTX 4060 8 GB gate blocks Stable, not the first beta. M2+ 1080p60 is a target, not a beta blocker.

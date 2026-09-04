@@ -1,0 +1,214 @@
+{
+  "startedAt": "2026-09-04T02:00:48.488Z",
+  "durationSeconds": 1800,
+  "failures": [],
+  "source": {
+    "uuid": "4a38206f-ef75-49f8-9785-9510e0d70586",
+    "asset": "knock-community-hall.sog",
+    "assetSha256": "5931c2b44710aa1d42a48f89b6b4546108430b16700b8eb5a656f8a55f25227a",
+    "settings": {
+      "background_color": 0,
+      "background_mode": "opaque",
+      "camera_distance": 358.15706545216204,
+      "camera_pitch": 16,
+      "camera_roll": 0,
+      "camera_target_x": 54.00116668290318,
+      "camera_target_y": -11.324960937500009,
+      "camera_target_z": -37.19058594852454,
+      "camera_yaw": 83.45000000000005,
+      "exposure": 1,
+      "focal_length_mm": 35,
+      "lens_preset_mm": 35,
+      "lod_enabled": true,
+      "lod_splat_count": 1000000,
+      "max_sh": 2,
+      "position_x": 0,
+      "position_y": 0,
+      "position_z": 0,
+      "quality_preset": "balanced",
+      "release_when_hidden": false,
+      "render_scale": 0.75,
+      "rotation_x": 0,
+      "rotation_y": -3.7,
+      "rotation_z": 0,
+      "scene_opacity": 1,
+      "scene_recolor": 16777215,
+      "scene_scale": 4.99,
+      "settings_schema_version": 1,
+      "target_fps": 60,
+      "tone_mapping": "none",
+      "undo_uuid": "4a38206f-ef75-49f8-9785-9510e0d70586"
+    }
+  },
+  "video": {
+    "baseHeight": 1080,
+    "baseWidth": 1920,
+    "fpsDenominator": 1,
+    "fpsNumerator": 60,
+    "outputHeight": 1080,
+    "outputWidth": 1920
+  },
+  "graphicsDevice": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "pluginSha256": "a1c644080d1406833a9adfba7dbd952722367aa042a26274ef032bf7d3d82e8c",
+  "idleBefore": {
+    "camera": {
+      "target": {
+        "x": 54.00116668290318,
+        "y": -11.324960937500009,
+        "z": -37.19058594852454
+      },
+      "yawDeg": 83.45000000000005,
+      "pitchDeg": 16,
+      "rollDeg": 0,
+      "distance": 358.15706545216204,
+      "focalLengthMm": 35,
+      "filmGaugeMm": 36,
+      "autoClipping": true,
+      "nearClip": 0.01,
+      "farClip": 10000
+    },
+    "meshSplats": 2487137,
+    "meshType": "e",
+    "localBounds": {
+      "min": [
+        0.74609375,
+        -10.03125,
+        0.021697998046875
+      ],
+      "max": [
+        19.890625,
+        14.5703125,
+        16.25
+      ]
+    },
+    "renderScheduled": false,
+    "renderCount": 175,
+    "lastSortTime": 10134.100000023842,
+    "sorting": false,
+    "sortDirty": false,
+    "metrics": {
+      "fps": 60.003934684241564,
+      "frameP95Ms": 16.799999999999272,
+      "activeSplats": 758921,
+      "width": 1440,
+      "height": 810,
+      "focalLengthMm": 35,
+      "horizontalFovDeg": 54.43222311461495,
+      "verticalFovDeg": 32.26880217111643
+    }
+  },
+  "idleAfter": {
+    "camera": {
+      "target": {
+        "x": 54.00116668290318,
+        "y": -11.324960937500009,
+        "z": -37.19058594852454
+      },
+      "yawDeg": 83.45000000000005,
+      "pitchDeg": 16,
+      "rollDeg": 0,
+      "distance": 358.15706545216204,
+      "focalLengthMm": 35,
+      "filmGaugeMm": 36,
+      "autoClipping": true,
+      "nearClip": 0.01,
+      "farClip": 10000
+    },
+    "meshSplats": 2487137,
+    "meshType": "e",
+    "localBounds": {
+      "min": [
+        0.74609375,
+        -10.03125,
+        0.021697998046875
+      ],
+      "max": [
+        19.890625,
+        14.5703125,
+        16.25
+      ]
+    },
+    "renderScheduled": false,
+    "renderCount": 175,
+    "lastSortTime": 10134.100000023842,
+    "sorting": false,
+    "sortDirty": false,
+    "metrics": {
+      "fps": 60.003934684241564,
+      "frameP95Ms": 16.799999999999272,
+      "activeSplats": 758921,
+      "width": 1440,
+      "height": 810,
+      "focalLengthMm": 35,
+      "horizontalFovDeg": 54.43222311461495,
+      "verticalFovDeg": 32.26880217111643
+    }
+  },
+  "idlePassed": true,
+  "obsBefore": {
+    "activeFps": 60.0000024000001,
+    "availableDiskSpace": 436088.0703125,
+    "averageFrameRenderTime": 0.195409,
+    "cpuUsage": 0.31942839520325667,
+    "memoryUsage": 435.359375,
+    "outputSkippedFrames": 0,
+    "outputTotalFrames": 88,
+    "renderSkippedFrames": 0,
+    "renderTotalFrames": 26291,
+    "webSocketSessionIncomingMessages": 123,
+    "webSocketSessionOutgoingMessages": 123
+  },
+  "motionUpdates": 36000,
+  "obsAfter": {
+    "activeFps": 60.0000024000001,
+    "availableDiskSpace": 435610.2734375,
+    "averageFrameRenderTime": 0.285031,
+    "cpuUsage": 0.37840975781898717,
+    "memoryUsage": 331.921875,
+    "outputSkippedFrames": 0,
+    "outputTotalFrames": 108098,
+    "renderSkippedFrames": 0,
+    "renderTotalFrames": 134301,
+    "webSocketSessionIncomingMessages": 36124,
+    "webSocketSessionOutgoingMessages": 36124
+  },
+  "recordingStatus": {
+    "outputActive": true,
+    "outputBytes": 200810830,
+    "outputDuration": 1801383,
+    "outputPaused": false,
+    "outputTimecode": "00:30:01.383"
+  },
+  "intervalsMs": {
+    "count": 108004,
+    "average": 16.665999407429354,
+    "p95": 16.700000000186265,
+    "maximum": 16.800000000046566
+  },
+  "cpuSubmissionMs": {
+    "count": 108005,
+    "average": 0.20096847328050982,
+    "p95": 0.4000000059604645,
+    "maximum": 3.5
+  },
+  "averageFps": 60.00240222942892,
+  "captureOverflow": false,
+  "screenshotSha256": "d8aa1c765031a4071d0522cbb9e36b48997787e774b1a0843dc2b09e1e0496ab",
+  "coverage": "CEF render-frame intervals during sinusoidal native camera edits at 20 Hz; CPU submission is not GPU duration; static idle checked separately",
+  "recording": {
+    "fileName": "2026-09-04 10-01-15.mkv",
+    "bytes": 202118724,
+    "sha256": "45e9e27fbbfd5f9ff77d689cacdf1144fcc964605dbd4f0efee6fa7560ab7c73"
+  },
+  "completedAt": "2026-09-04T02:31:18.297Z",
+  "renderSkippedFrames": 0,
+  "renderTotalFrames": 108010,
+  "renderSkipRatio": 0,
+  "meetsRtx4090Gate": true,
+  "passed": true,
+  "rawFrames": {
+    "file": "2026-09-04-renderer-30m-frames.json.gz",
+    "sha256": "6e456763a993690371eb9484a1e3bc99e754da56d41c60c63fb1d52c80a28d51",
+    "count": 108005
+  }
+}

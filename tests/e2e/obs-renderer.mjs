@@ -7,6 +7,7 @@ import path from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { CdpClient } from "./cdp-client.mjs";
 import { ObsWebSocketClient } from "./obs-websocket-client.mjs";
+import { evaluatePerformanceGate } from "./performance-gate.ts";
 
 const args = Object.fromEntries(process.argv.slice(2).reduce((pairs, item, index, items) => {
   if (index % 2 === 0) {
@@ -19,6 +20,8 @@ const root = path.resolve(import.meta.dirname, "../..");
 const output = path.resolve(root, args.output ?? "output/obs-renderer");
 assert(!path.relative(root, output).startsWith("..") && !path.isAbsolute(path.relative(root, output)), "Output must be inside the workspace");
 const duration = Number(args["duration-seconds"] ?? 30);
+const gate = args.gate ?? "rtx4090";
+assert(["rtx4090", "rtx4060", "apple-m1"].includes(gate), "Unknown --gate");
 assert(Number.isInteger(duration) && duration >= 10 && duration <= 1800, "Duration must be 10..1800 seconds");
 const endpoint = new URL(args.cef ?? "http://127.0.0.1:9223");
 assert(endpoint.protocol === "http:" && endpoint.hostname === "127.0.0.1", "CEF discovery must use 127.0.0.1");
@@ -33,6 +36,7 @@ const summarize = (values) => {
     p95: sorted[Math.ceil(sorted.length * 0.95) - 1], maximum: sorted.at(-1) };
 };
 let cdp, source, original, originalUrl, recording = false;
+let settingsBeforePose;
 let originalRecordingDirectory;
 const originalMutes = [];
 const snapshot = () => cdp.evaluate(`(() => {
@@ -69,11 +73,23 @@ const moveCamera = async (seconds) => {
 await mkdir(output, { recursive: true });
 try {
   await client.connect();
+  assert(!(await client.request("GetStreamStatus")).outputActive, "Use an isolated OBS instance without active streaming");
   const inputs = await client.request("GetInputList", { inputKind: "obs_3dgs_source" });
   source = inputs.inputs.find((input) => !input.inputName.startsWith("obs-3dgs-"));
   assert(source, "A loaded test source is required");
   original = (await client.request("GetInputSettings", { inputUuid: source.inputUuid })).inputSettings;
   assert(!original.live_lock, "Unlock the isolated test source before benchmarking");
+  if (args.pose) {
+    const pose = JSON.parse(await readFile(path.resolve(root, args.pose), "utf8"));
+    for (const [key, value] of Object.entries(pose)) {
+      assert(/^(camera_(target_[xyz]|yaw|pitch|roll|distance)|focal_length_mm)$/.test(key) &&
+        typeof value === "number" && Number.isFinite(value), "Pose files may contain only finite camera values");
+    }
+    settingsBeforePose = original;
+    await client.request("SetInputSettings", { inputUuid: source.inputUuid, inputSettings: pose, overlay: true });
+    original = (await client.request("GetInputSettings", { inputUuid: source.inputUuid })).inputSettings;
+    report.poseFile = path.basename(args.pose);
+  }
   const targets = await (await fetch(new URL("/json/list", endpoint))).json();
   const target = targets.find((target) => target.type === "page" &&
     new URL(target.url).searchParams.get("sourceId") === source.inputUuid);
@@ -111,6 +127,7 @@ try {
   await moveCamera(5);
   if (args.record === "true") {
     assert(!(await client.request("GetRecordStatus")).outputActive, "OBS is already recording");
+    assert.equal((await client.request("GetProfileParameter", { parameterCategory: "Output", parameterName: "Mode" })).parameterValue, "Simple", "Use a dedicated Simple Output recording profile");
     const directory = path.join(output, "recordings");
     await mkdir(directory, { recursive: true });
     originalRecordingDirectory = (await client.request("GetProfileParameter", { parameterCategory: "SimpleOutput", parameterName: "FilePath" })).parameterValue;
@@ -178,7 +195,7 @@ try {
     catch (error) { report.failures.push(`Restore recording directory: ${error.message}`); }
   }
   if (original && source) {
-    try { await client.request("SetInputSettings", { inputUuid: source.inputUuid, inputSettings: original, overlay: false }); }
+    try { await client.request("SetInputSettings", { inputUuid: source.inputUuid, inputSettings: settingsBeforePose ?? original, overlay: false }); }
     catch (error) { report.failures.push(`Restore settings: ${error.message}`); }
   }
   if (cdp && originalUrl) {
@@ -188,15 +205,22 @@ try {
   cdp?.close();
   client.close();
   report.completedAt = new Date().toISOString();
-  if (duration >= 1800 && args.record === "true" && report.obsAfter && report.obsBefore) {
+  if ((duration >= 1800 || gate === "apple-m1") && args.record === "true" && report.obsAfter && report.obsBefore) {
     report.renderSkippedFrames = report.obsAfter.renderSkippedFrames - report.obsBefore.renderSkippedFrames;
     report.renderTotalFrames = report.obsAfter.renderTotalFrames - report.obsBefore.renderTotalFrames;
     report.renderSkipRatio = report.renderSkippedFrames / report.renderTotalFrames;
-    report.meetsRtx4090Gate = report.failures.length === 0 && /RTX 4090/.test(report.graphicsDevice) &&
-      original.quality_preset === "balanced" && report.video.baseWidth === 1920 && report.video.baseHeight === 1080 &&
-      report.averageFps >= 58 && report.intervalsMs.p95 <= 20 && report.renderSkipRatio < 0.005 &&
-      report.recordingStatus?.outputActive && report.recordingStatus.outputDuration >= 1800_000 && report.recording?.bytes > 0;
-    if (!report.meetsRtx4090Gate) report.failures.push("The complete RTX 4090 recording/renderer gate did not pass");
+    report.hardwareGate = gate;
+    report.failures.push(...evaluatePerformanceGate(gate, {
+      device: report.graphicsDevice, durationSeconds: duration, recordingMs: report.recordingStatus?.outputDuration ?? 0,
+      recordingBytes: report.recording?.bytes ?? 0, averageFps: report.averageFps, frameP95Ms: report.intervalsMs?.p95,
+      frameCount: report.intervalsMs?.count ?? 0, frameSpanSeconds: (report.intervalsMs?.average ?? 0) * (report.intervalsMs?.count ?? 0) / 1000,
+      renderSkipRatio: report.renderSkipRatio, overflow: report.captureOverflow, idlePassed: report.idlePassed,
+      width: report.video.baseWidth, height: report.video.baseHeight, outputWidth: report.video.outputWidth,
+      outputHeight: report.video.outputHeight, outputFps: report.video.fpsNumerator / report.video.fpsDenominator,
+      rasterWidth: report.idleBefore.metrics?.width, rasterHeight: report.idleBefore.metrics?.height, settings: original
+    }));
+    report.meetsPerformanceGate = report.failures.length === 0;
+    if (gate === "rtx4090") report.meetsRtx4090Gate = report.meetsPerformanceGate;
   }
   report.passed = report.failures.length === 0;
   await writeFile(path.join(output, "renderer-report.json"), JSON.stringify(report, null, 2) + "\n");
