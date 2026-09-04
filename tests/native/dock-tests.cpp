@@ -33,9 +33,17 @@ int main(int argc, char **argv)
   obs3dgs::ScalarControl control(QStringLiteral("Focal length"), "Camera.FocalLength", 16, 200, 1, false);
   control.setValue(35, true);
   control.show();
+  control.activateWindow();
   auto *spin = control.findChild<QDoubleSpinBox *>();
   auto *slider = control.findChild<QSlider *>();
+  expect(spin && slider, "the numeric and slider editors must be discoverable");
+  if (!spin || !slider)
+    return 1;
   auto *editor = spin->findChild<QLineEdit *>();
+  expect(editor != nullptr, "the spin box must expose its text editor");
+  if (!editor)
+    return 1;
+  std::cout << "Qt editors initialized\n" << std::flush;
   spin->setFocus();
   app.processEvents();
   expect(spin->hasFocus(), "the test must actually focus the editable field");
@@ -63,6 +71,7 @@ int main(int argc, char **argv)
   slider->setSliderDown(false);
   control.setValue(35);
   expect(control.value() == 35, "polling should resume after the drag ends");
+  std::cout << "Scalar editing checks completed\n" << std::flush;
 
   obs3dgs::PendingDockEdits pending;
   pending.set("source-a", "focal_length_mm", 24);
@@ -74,6 +83,7 @@ int main(int argc, char **argv)
   expect(edits.at({"source-a", "focal_length_mm"}) == 35, "queued edits retain their original source");
   expect(edits.at({"source-b", "focal_length_mm"}) == 85, "a new source's edits remain separate");
   expect(pending.take().empty(), "drained edits must not be applied again");
+  std::cout << "Queued edit checks completed\n" << std::flush;
 
   obs3dgs::DockPresetState model;
   QComboBox combo;

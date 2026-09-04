@@ -74,6 +74,15 @@ jobs:
       - run: cmake --preset macos-ci
       - run: cmake --build --preset macos-ci --parallel
       - run: ctest --test-dir build_macos -C RelWithDebInfo --output-on-failure
+      - name: Native crash diagnostics
+        if: failure()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for report in (Path.home() / "Library/Logs/DiagnosticReports").glob("obs-3dgs*.ips"):
+              print(report.name)
+              print(report.read_text())
+          PY
       - run: zsh scripts/package-macos.sh
       - uses: actions/upload-artifact@v4
         with:
