@@ -17,7 +17,7 @@ See [testing](testing.md) for automated evidence. Unchecked items below require 
 - [ ] With the fixed public fixture/camera, measure average ≥29 FPS, frame-interval P95 ≤36 ms and OBS render skips <0.5%. Retain raw timestamps, screenshot, settings and device information.
 - [ ] Verify idle rendering/sorting and repeat load/unload stability.
 
-CI compilation alone is not hardware acceptance. RTX 4060 performance gates Stable; M2+ 1080p60 is a non-blocking target. Valid RAD rendering remains unverified.
+CI compilation alone is not hardware acceptance. RTX 4060 performance gates Stable; M2+ 1080p60 is a non-blocking target. RAD has single-file smoke coverage; large scenes and external multi-file chunks are outside that fixture.
 
 After configuring the dedicated Simple Output profile at 30 FPS and selecting an available macOS recording encoder, run:
 

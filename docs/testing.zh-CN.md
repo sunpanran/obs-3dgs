@@ -18,6 +18,6 @@ Web 检查使用 `npm run typecheck`、`npm run lint`、`npm test` 和 `npm run 
 
 真实 libobs API 的 100 次复制、私有 UI 状态隔离，以及 OBS 属性取消所用的调用路径已通过 [原生契约回归](benchmarks/data/2026-09-04-native-contracts.json)。[长时逐帧与录制](benchmarks/2026-09-04-windows-renderer-performance.zh-CN.md)保留完整原始帧数据。
 
-[人工验收清单](manual-acceptance.zh-CN.md)仍保留实际菜单/窗口按钮、Dock 全流程同步、缺失文件窗口和物理热键绑定；自动 API 检查与这些人工动作区分记录。RAD 有效样例尚未完成渲染验证。Apple M1 平衡档 1080p30 必须达到平均 ≥29 FPS、P95 ≤36 ms。
+[人工验收清单](manual-acceptance.zh-CN.md)仍保留实际菜单/窗口按钮、Dock 全流程同步、缺失文件窗口和物理热键绑定；自动 API 检查与这些人工动作区分记录。[RAD 单文件样例](benchmarks/data/2026-09-04-windows-rad.json)也已通过成像、截断与损坏恢复；不涵盖外部多文件分块。Apple M1 平衡档 1080p30 必须达到平均 ≥29 FPS、P95 ≤36 ms。
 
 RTX 4060 8 GB 门槛阻止 Stable，不阻止首个 Beta；M2+ 1080p60 是目标，不是 Beta 阻塞项。

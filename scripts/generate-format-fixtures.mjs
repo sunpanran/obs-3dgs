@@ -65,9 +65,36 @@ const ksplat = Buffer.concat([ksplatHeader, ...points.map(p => Buffer.concat([
   encodeFloats([p.x, p.y, p.z, p.scale, p.scale, p.scale, 1, 0, 0, 0]),
   Buffer.from([p.r * 255, p.g * 255, p.b * 255, p.alpha * 255])
 ]))]);
+// Minimal single-file RAD fixture: uncompressed float32 columns, no external chunks.
+const descriptor = (magic, metadata) => {
+  const json = Buffer.from(JSON.stringify(metadata));
+  const prefix = Buffer.alloc(8);
+  prefix.write(magic);
+  prefix.writeUInt32LE(json.length, 4);
+  return Buffer.concat([prefix, json, Buffer.alloc(Math.ceil(json.length / 8) * 8 - json.length)]);
+};
+const columns = [
+  ["center", [points.map(p => p.x), points.map(p => p.y), points.map(p => p.z)]],
+  ["alpha", [points.map(p => p.alpha)]],
+  ["rgb", [points.map(p => p.r), points.map(p => p.g), points.map(p => p.b)]],
+  ["scales", Array.from({ length: 3 }, () => points.map(p => p.scale))],
+  ["orientation", Array.from({ length: 3 }, () => points.map(() => 0))]
+].map(([property, values]) => ({ property, bytes: encodeFloats(values.flat()) }));
+let payloadSize = 0;
+const radProperties = columns.map(column => {
+  const property = { property: column.property, encoding: "f32", offset: payloadSize, bytes: column.bytes.length };
+  payloadSize += column.bytes.length;
+  return property;
+});
+const payloadSizeBytes = Buffer.alloc(8);
+payloadSizeBytes.writeBigUInt64LE(BigInt(payloadSize));
+const chunk = Buffer.concat([descriptor("RADC", { version: 1, base: 0, count: points.length,
+  payloadBytes: payloadSize, maxSh: 0, properties: radProperties }), payloadSizeBytes, ...columns.map(column => column.bytes)]);
+const rad = Buffer.concat([descriptor("RAD0", { version: 1, type: "gsplat", count: points.length,
+  maxSh: 0, chunkSize: 65536, allChunkBytes: chunk.length, chunks: [{ offset: 0, bytes: chunk.length, base: 0, count: points.length }] }), chunk]);
 await mkdir(output, { recursive: true });
 for (const [name, bytes] of Object.entries({ "format-grid.ply": ply, "format-grid-compressed.ply": compressed,
-  "format-grid.spz": await writer.finalize(), "format-grid.splat": splat, "format-grid.ksplat": ksplat })) {
+  "format-grid.spz": await writer.finalize(), "format-grid.splat": splat, "format-grid.ksplat": ksplat, "format-grid.rad": rad })) {
   await writeFile(path.join(output, name), bytes);
   console.log(`${name}: ${bytes.length} bytes`);
 }

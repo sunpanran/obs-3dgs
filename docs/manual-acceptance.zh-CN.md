@@ -29,4 +29,4 @@ macOS Universal 构建通过只证明编译、测试与打包；以下项目须�
 npm run test:obs:renderer -- --duration-seconds 60 --record true --gate apple-m1 --pose docs/benchmarks/data/knock-community-hall-close-camera.json
 ```
 
-RTX 4060 8 GB 同标准为 Stable 门槛；M2+ 1080p60 为目标，不阻塞首个 Beta。当前 RAD 有效样例仍缺实测，不应计为完整格式验收。
+RTX 4060 8 GB 同标准为 Stable 门槛；M2+ 1080p60 为目标，不阻塞首个 Beta。RAD 已有单文件最小样例实测；大场景和外部多文件分块不属于该样例覆盖。

@@ -1,0 +1,42 @@
+{
+  "startedAt": "2026-09-04T03:31:11.139Z",
+  "cases": [
+    {
+      "filename": "format-grid.rad",
+      "bytes": 3904,
+      "sha256": "dbbe031082f6b10f2f0003f579ed6c00f1cb33688bdd680ce066f6a667d41144",
+      "checks": {
+        "valid": true,
+        "truncated": {
+          "restoredPath": true,
+          "screenshotSha256": "21d6911b5e8a1ed21ce5ddb825f46041835bb5acfa67e1f39c9c9ce39b5d7a20"
+        },
+        "corrupt": {
+          "restoredPath": true,
+          "screenshotSha256": "21d6911b5e8a1ed21ce5ddb825f46041835bb5acfa67e1f39c9c9ce39b5d7a20"
+        }
+      },
+      "loadMs": 520.519,
+      "settings": {
+        "camera_roll": 0,
+        "camera_yaw": 35,
+        "follow_canvas": false,
+        "lens_preset_mm": 35,
+        "lod_enabled": true,
+        "lod_splat_count": 1000000,
+        "max_sh": 2,
+        "output_height": 720,
+        "output_width": 1280,
+        "render_scale": 0.75,
+        "settings_schema_version": 1,
+        "target_fps": 60
+      },
+      "screenshot": "format-grid.rad.png",
+      "screenshotSha256": "21d6911b5e8a1ed21ce5ddb825f46041835bb5acfa67e1f39c9c9ce39b5d7a20",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "passed": true,
+  "completedAt": "2026-09-04T03:31:18.178Z"
+}

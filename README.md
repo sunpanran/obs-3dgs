@@ -18,7 +18,7 @@
 
 Stable formats are PLY, compressed PLY, SPZ, and SOG. SPLAT, KSPLAT, ZIP, and RAD are experimental in the first beta.
 
-PLY currently requires binary little-endian encoding. Seven formats have real load/error-recovery evidence; valid RAD rendering remains unverified.
+PLY currently requires binary little-endian encoding. Eight formats/variants have real load/error-recovery evidence; RAD coverage uses a minimal single-file fixture, not external multi-file chunks.
 
 ## Supported hosts
 

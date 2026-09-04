@@ -18,7 +18,7 @@
 
 正式格式为 PLY、Compressed PLY、SPZ、SOG；SPLAT、KSPLAT、ZIP、RAD 在首个 Beta 中标为实验格式。
 
-PLY 当前接受 binary little-endian 编码。七种格式已有实机加载/错误恢复证据；RAD 的有效文件渲染仍待验证。
+PLY 当前接受 binary little-endian 编码。八种格式/变体已有实机加载与错误恢复证据；RAD 覆盖单文件最小样例，外部多文件分块不在当前范围内。
 
 ## 支持环境
 

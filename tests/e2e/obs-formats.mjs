@@ -7,7 +7,8 @@ import { setTimeout as delay } from "node:timers/promises";
 import { ObsWebSocketClient } from "./obs-websocket-client.mjs";
 
 const root = path.resolve(import.meta.dirname, "../..");
-const output = path.join(root, "output/obs-formats");
+const output = path.resolve(root, process.env.OBS_FORMAT_OUTPUT ?? "output/obs-formats");
+assert(!path.relative(root, output).startsWith("..") && !path.isAbsolute(path.relative(root, output)), "Output must stay in the workspace");
 const logPath = process.env.OBS_LOG_PATH;
 assert(logPath && process.env.OBS_WEBSOCKET_PASSWORD, "Set OBS_LOG_PATH and OBS_WEBSOCKET_PASSWORD");
 const client = new ObsWebSocketClient({ url: process.env.OBS_WEBSOCKET_URL ?? "ws://127.0.0.1:4456", password: process.env.OBS_WEBSOCKET_PASSWORD });
@@ -15,9 +16,12 @@ const report = { startedAt: new Date().toISOString(), cases: [], failures: [] };
 const hash = bytes => createHash("sha256").update(bytes).digest("hex");
 const created = new Set();
 await mkdir(output, { recursive: true });
-await copyFile(path.join(root, "public/samples/knock-community-hall.sog"), path.join(output, "hall.zip"));
-const files = ["format-grid.ply", "format-grid-compressed.ply", "format-grid.spz", "knock-community-hall.sog",
-  "format-grid.splat", "format-grid.ksplat", "hall.zip"];
+const supportedFiles = ["format-grid.ply", "format-grid-compressed.ply", "format-grid.spz", "knock-community-hall.sog",
+  "format-grid.splat", "format-grid.ksplat", "hall.zip", "format-grid.rad"];
+const requestedFiles = (process.env.OBS_FORMAT_FILES ?? "").split(",").filter(Boolean);
+assert(requestedFiles.every(file => supportedFiles.includes(file)), "Unknown fixture selection");
+const files = requestedFiles.length ? requestedFiles : supportedFiles;
+if (files.includes("hall.zip")) await copyFile(path.join(root, "public/samples/knock-community-hall.sog"), path.join(output, "hall.zip"));
 try {
   await client.connect();
   const { currentProgramSceneName: sceneName } = await client.request("GetCurrentProgramScene");

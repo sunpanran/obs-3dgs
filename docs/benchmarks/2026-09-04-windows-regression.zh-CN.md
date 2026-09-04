@@ -49,6 +49,6 @@ npm run test:obs:renderer -- --duration-seconds 30 --output output/obs-renderer
 npm run test:obs:renderer -- --duration-seconds 1800 --record true --output output/obs-renderer-30m
 ```
 
-RAD 的有效文件渲染仍待验证，仅有签名拒绝单元测试。格式测试是最小样例覆盖，不代表所有第三方变体。原生 Qt 组件测试不能替代 OBS 菜单、属性页取消、热键绑定和 Dock 的完整人工验收；Apple M1 性能也仍需真机。
+[RAD 补充回归](data/2026-09-04-windows-rad.json)使用独立编写的单文件 F32 网格，已通过成像、截断和损坏恢复；八种格式/变体合计 24 个有效/截断/损坏检查通过。格式测试是最小样例覆盖，不代表所有第三方变体。原生 Qt 组件测试不能替代 OBS 菜单、属性页取消、热键绑定和 Dock 的完整人工验收；Apple M1 性能也仍需真机。
 
 接口依据：[OBS CEF 调试](https://github.com/obsproject/obs-studio/wiki/Browser-source-development-and-debugging)、[SparkRenderer](https://sparkjs.dev/docs/spark-renderer/)。

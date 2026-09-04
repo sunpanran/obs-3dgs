@@ -29,7 +29,7 @@ An additional ten-second static observation recorded no extra draws or sorts and
 
 Run the dedicated OBS instance with `--remote-debugging-port=9223 --remote-debugging-address=127.0.0.1`; set `OBS_WEBSOCKET_PASSWORD` and `OBS_LOG_PATH` locally, then use `npm run test:obs:formats`, `npm run test:obs:server`, or `npm run test:obs:renderer -- --duration-seconds 1800 --record true`. Restart the dedicated instance without debugging afterward.
 
-Valid RAD rendering remains unverified. Small fixtures do not cover all exporter variants. Component tests do not replace frontend Duplicate, property Cancel, hotkey-binding, or full Dock manual acceptance. Apple M1 still requires hardware testing.
+The [RAD supplement](data/2026-09-04-windows-rad.json) passed rendering, truncation and corruption recovery using an independently written single-file F32 grid, bringing coverage to eight formats/variants and 24 cases. Small fixtures do not cover all exporter variants. Component tests do not replace frontend Duplicate, property Cancel, hotkey-binding, or full Dock manual acceptance. Apple M1 still requires hardware testing.
 
 References: [OBS CEF debugging](https://github.com/obsproject/obs-studio/wiki/Browser-source-development-and-debugging), [SparkRenderer](https://sparkjs.dev/docs/spark-renderer/).
 
