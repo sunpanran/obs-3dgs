@@ -1,0 +1,37 @@
+{
+  "phase": "after",
+  "testedAt": "2026-09-04T01:19:28.089Z",
+  "sourceUuid": "4a38206f-ef75-49f8-9785-9510e0d70586",
+  "asset": "knock-community-hall.sog",
+  "assetSha256": "5931c2b44710aa1d42a48f89b6b4546108430b16700b8eb5a656f8a55f25227a",
+  "dllSha256": "c37271a91f9a96ec2ff54962f31ee8893029d2a6dde9b8c336919deb49a45b1f",
+  "video": {
+    "baseHeight": 1080,
+    "baseWidth": 1920,
+    "fpsDenominator": 1,
+    "fpsNumerator": 60,
+    "outputHeight": 1080,
+    "outputWidth": 1920
+  },
+  "pose": {
+    "camera_distance": 358.15706545216204,
+    "camera_pitch": 16,
+    "camera_roll": 0,
+    "camera_target_x": 54.00116668290318,
+    "camera_target_y": -11.324960937500009,
+    "camera_target_z": -37.19058594852454,
+    "camera_yaw": 83.45000000000005,
+    "focal_length_mm": 35,
+    "position_x": 0,
+    "position_y": 0,
+    "position_z": 0,
+    "quality_preset": "balanced",
+    "render_scale": 0.75,
+    "rotation_x": 0,
+    "rotation_y": -3.7,
+    "rotation_z": 0,
+    "scene_scale": 4.99
+  },
+  "screenshotSha256": "47a485a29834e8b191aff8a0a5f189054f1f7c3333f82887a5ab99bb8acdce10",
+  "samePixels": true
+}

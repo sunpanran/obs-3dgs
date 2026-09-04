@@ -1,0 +1,46 @@
+{
+  "dependencies": {
+    "obs-studio": {
+      "version": "32.2.2",
+      "versions": { "macos": "32.1.2" },
+      "baseUrl": "https://github.com/obsproject/obs-studio/archive/refs/tags",
+      "label": "OBS Studio sources",
+      "hashes": {
+        "macos": "b4a59410cddb46d0e31df1ee13b8ec66f30862d7e980c1a8c4e3b5d16fae6053",
+        "windows-x64": "f15f001f1fa526405318835f44f9910046502f496ebc3a30d5296a5018b831aa"
+      }
+    },
+    "prebuilt": {
+      "version": "2026-07-15",
+      "versions": { "macos": "2025-08-23" },
+      "baseUrl": "https://github.com/obsproject/obs-deps/releases/download",
+      "label": "Pre-built OBS dependencies",
+      "hashes": {
+        "macos": "9403bb43fb0a9bb215739a5659ca274fe884dbbbcd22bd9ca781c961fb041c42",
+        "windows-x64": "6f90e9598fa10cff5ad23cdcfae49b87868c07bf896b02cd464582b4ce2f2ba9"
+      }
+    },
+    "qt6": {
+      "version": "2026-07-15",
+      "versions": { "macos": "2025-08-23" },
+      "baseUrl": "https://github.com/obsproject/obs-deps/releases/download",
+      "label": "Pre-built Qt 6",
+      "hashes": {
+        "macos": "990f11638b80a4509e14e8c315f6e4caa0861e37fcd3113a256fbff835ffca29",
+        "windows-x64": "7c7f985711d80467bdc1795b6592275a27d5b0e5a2c7a61db1f2c1d08d6a5579"
+      }
+    }
+  },
+  "platformConfig": {
+    "macos": {
+      "bundleId": "dev.obsproject.obs-3dgs"
+    }
+  },
+  "name": "obs-3dgs",
+  "displayName": "OBS 3DGS Source",
+  "version": "0.1.0",
+  "releaseVersion": "0.1.0-beta.1",
+  "author": "obs-3dgs contributors",
+  "website": "https://github.com/sunpanran/obs-3dgs",
+  "email": ""
+}

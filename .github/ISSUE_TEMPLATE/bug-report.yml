@@ -1,0 +1,53 @@
+name: Bug report / 缺陷报告
+description: Report a reproducible plugin, renderer, or OBS integration problem.
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: Do not upload private scenes, tokens, or full private paths. / 请勿上传私有场景、令牌或完整私有路径。
+  - type: input
+    id: versions
+    attributes:
+      label: Plugin and OBS versions / 插件与 OBS 版本
+      placeholder: obs-3dgs 0.1.0-beta.1; OBS 32.2.2
+    validations:
+      required: true
+  - type: input
+    id: system
+    attributes:
+      label: OS and GPU / 系统与 GPU
+    validations:
+      required: true
+  - type: input
+    id: asset
+    attributes:
+      label: Format and file size / 格式与文件大小
+      description: Give only the format and size unless the scene is safely redistributable.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps / 复现步骤
+      placeholder: "1. Add 3DGS Scene\n2. Select a scene\n3. Change a setting"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual result / 预期与实际结果
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Diagnostics and visual evidence / 诊断与画面证据
+      description: Attach a redacted diagnostic export, OBS log excerpt, screenshot, or short recording.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Safety checks / 安全确认
+      options:
+        - label: I removed tokens, credentials, full private paths, and private scene data.
+          required: true

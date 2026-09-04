@@ -1,0 +1,45 @@
+{
+  "name": "obs-3dgs",
+  "version": "0.1.0-beta.1",
+  "private": true,
+  "description": "A bilingual OBS source for local 3D Gaussian Splatting scenes.",
+  "license": "GPL-2.0-or-later",
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0",
+    "npm": ">=11.0.0"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5173 --strictPort",
+    "build": "npm run typecheck && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:obs:lifecycle": "node tests/e2e/obs-lifecycle.mjs",
+    "test:obs:loaded-lifecycle": "node tests/e2e/obs-loaded-lifecycle.mjs",
+    "test:obs:performance": "node tests/e2e/obs-performance.mjs",
+    "test:obs:renderer": "node tests/e2e/obs-renderer.mjs",
+    "test:obs:formats": "node tests/e2e/obs-formats.mjs",
+    "test:obs:server": "node tests/e2e/obs-server.mjs",
+    "test:obs:behavior": "node tests/e2e/obs-behavior.mjs",
+    "test:obs:missing-file": "node tests/e2e/obs-missing-file.mjs",
+    "test:obs:copy-isolation": "node tests/e2e/obs-copy-isolation.mjs",
+    "lint": "eslint src tests vite.config.ts eslint.config.js",
+    "sbom": "node scripts/generate-sbom.mjs",
+    "package:windows": "pwsh -NoProfile -File scripts/package-windows.ps1"
+  },
+  "dependencies": {
+    "@sparkjsdev/spark": "2.1.0",
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/three": "0.180.0",
+    "eslint": "10.9.1",
+    "globals": "17.12.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.69.0",
+    "vite": "8.2.2",
+    "vitest": "4.1.11"
+  }
+}

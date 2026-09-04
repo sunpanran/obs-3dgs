@@ -1,0 +1,43 @@
+{
+  "startedAt": "2026-09-03T09:08:24.249Z",
+  "mode": "recover",
+  "obsLogFile": "2026-09-03 17-07-46.txt",
+  "checks": {
+    "missingPathPersisted": {
+      "passed": true,
+      "missingFileName": "missing-on-restart.sog",
+      "screenshot": {
+        "fileName": "missing-path.png",
+        "sizeBytes": 3693124,
+        "sha256": "82d613edca20c4fe7acc0d68304c0134280ce0190359ebaf043abd9e8923b365"
+      }
+    },
+    "relinkedAndRestored": {
+      "passed": true,
+      "relocatedFileName": "relocated-scene.sog",
+      "relocated": {
+        "fileName": "relocated.png",
+        "sizeBytes": 3693124,
+        "sha256": "880aac9042aaa4a8e8cad48de6cb5bfd44b3c20a212874eee93e4897ea292dae"
+      },
+      "restored": {
+        "fileName": "restored-original.png",
+        "sizeBytes": 3693124,
+        "sha256": "880aac9042aaa4a8e8cad48de6cb5bfd44b3c20a212874eee93e4897ea292dae"
+      }
+    }
+  },
+  "failures": [],
+  "version": {
+    "obsVersion": "32.2.2",
+    "obsWebSocketVersion": "5.7.4",
+    "rpcVersion": 1
+  },
+  "source": {
+    "inputName": "3DGS 场景",
+    "inputUuid": "4a38206f-ef75-49f8-9785-9510e0d70586",
+    "originalFileName": "knock-community-hall.sog"
+  },
+  "completedAt": "2026-09-03T09:08:40.730Z",
+  "passed": true
+}

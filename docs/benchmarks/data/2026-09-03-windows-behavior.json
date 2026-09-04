@@ -1,0 +1,92 @@
+{
+  "startedAt": "2026-09-03T09:12:24.475Z",
+  "obsLogFile": "2026-09-03 17-07-46.txt",
+  "checks": {
+    "liveLock": {
+      "passed": true,
+      "blockedSettings": [
+        "exposure",
+        "focal_length_mm",
+        "scene_scale",
+        "camera_yaw",
+        "background_mode"
+      ]
+    },
+    "lockedPresetHotkeys": {
+      "passed": true,
+      "registeredHotkeys": [
+        "obs3dgs.reset_camera",
+        "obs3dgs.previous_preset",
+        "obs3dgs.next_preset",
+        "obs3dgs.preset_1",
+        "obs3dgs.preset_2",
+        "obs3dgs.preset_3",
+        "obs3dgs.preset_4"
+      ],
+      "allowedWhileLocked": [
+        "previous_preset",
+        "next_preset",
+        "preset_1",
+        "preset_2"
+      ],
+      "blockedWhileLocked": [
+        "reset_camera"
+      ]
+    },
+    "transparentComposite": {
+      "passed": true,
+      "opaqueScene": {
+        "fileName": "composite-opaque.png",
+        "sizeBytes": 3693124,
+        "sha256": "880aac9042aaa4a8e8cad48de6cb5bfd44b3c20a212874eee93e4897ea292dae"
+      },
+      "transparentScene": {
+        "fileName": "composite-transparent.png",
+        "sizeBytes": 3693124,
+        "sha256": "b491d05fa9741ee0ac9ee442e865ee6300365c831ceb42f6c1fb2f4162ed4f9c"
+      }
+    },
+    "failedStagingRecovery": {
+      "passed": true,
+      "fixtureFileName": "corrupt-runtime.sog",
+      "before": {
+        "fileName": "recovery-before.png",
+        "sizeBytes": 3693124,
+        "sha256": "880aac9042aaa4a8e8cad48de6cb5bfd44b3c20a212874eee93e4897ea292dae"
+      },
+      "after": {
+        "fileName": "recovery-after.png",
+        "sizeBytes": 3693124,
+        "sha256": "880aac9042aaa4a8e8cad48de6cb5bfd44b3c20a212874eee93e4897ea292dae"
+      }
+    },
+    "latestSelectionCancellation": {
+      "passed": true,
+      "supersededFileName": "cancellation-a.sog",
+      "selectedFileName": "cancellation-b.sog",
+      "selected": {
+        "fileName": "cancellation-latest.png",
+        "sizeBytes": 3693124,
+        "sha256": "880aac9042aaa4a8e8cad48de6cb5bfd44b3c20a212874eee93e4897ea292dae"
+      },
+      "restored": {
+        "fileName": "cancellation-restored.png",
+        "sizeBytes": 3693124,
+        "sha256": "880aac9042aaa4a8e8cad48de6cb5bfd44b3c20a212874eee93e4897ea292dae"
+      }
+    }
+  },
+  "failures": [],
+  "version": {
+    "obsVersion": "32.2.2",
+    "obsWebSocketVersion": "5.7.4",
+    "rpcVersion": 1
+  },
+  "source": {
+    "inputName": "3DGS 场景",
+    "inputUuid": "4a38206f-ef75-49f8-9785-9510e0d70586",
+    "assetFileName": "knock-community-hall.sog"
+  },
+  "completedAt": "2026-09-03T09:12:58.640Z",
+  "passed": true
+}

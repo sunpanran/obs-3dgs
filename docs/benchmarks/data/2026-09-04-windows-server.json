@@ -1,0 +1,72 @@
+{
+  "startedAt": "2026-09-04T01:54:12.367Z",
+  "checks": [
+    {
+      "name": "authenticated HEAD",
+      "passed": true
+    },
+    {
+      "name": "exact byte range",
+      "passed": true
+    },
+    {
+      "name": "suffix range",
+      "passed": true
+    },
+    {
+      "name": "reject range bytes=0-1,4-5",
+      "passed": true
+    },
+    {
+      "name": "reject range bytes=29768772-",
+      "passed": true
+    },
+    {
+      "name": "reject range bytes=7-3",
+      "passed": true
+    },
+    {
+      "name": "reject absent token",
+      "passed": true
+    },
+    {
+      "name": "reject wrong token",
+      "passed": true
+    },
+    {
+      "name": "asset directory is not served",
+      "passed": true
+    },
+    {
+      "name": "web traversal cannot reach plugin data",
+      "passed": true
+    },
+    {
+      "name": "invalid JSON",
+      "passed": true
+    },
+    {
+      "name": "wrong protocol type",
+      "passed": true
+    },
+    {
+      "name": "wrong source type",
+      "passed": true
+    },
+    {
+      "name": "negative revision",
+      "passed": true
+    },
+    {
+      "name": "oversized event",
+      "passed": true
+    },
+    {
+      "name": "host remains responsive",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "completedAt": "2026-09-04T01:54:19.039Z",
+  "passed": true
+}

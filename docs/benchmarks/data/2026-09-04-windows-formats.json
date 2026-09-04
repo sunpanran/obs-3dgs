@@ -1,0 +1,148 @@
+{
+  "startedAt": "2026-09-04T01:54:19.437Z",
+  "cases": [
+    {
+      "filename": "format-grid.ply",
+      "bytes": 4820,
+      "sha256": "6a13bfb5f1fe0c8a1c73b73447d6eb7b103a8f5dc9f4bf0b05ece594932cb967",
+      "checks": {
+        "valid": true,
+        "truncated": {
+          "restoredPath": true,
+          "screenshotSha256": "dab149c809dbffc070bef1fe1e9fe19feb64397595380f9d1ab8296d9dad0af6"
+        },
+        "corrupt": {
+          "restoredPath": true,
+          "screenshotSha256": "dab149c809dbffc070bef1fe1e9fe19feb64397595380f9d1ab8296d9dad0af6"
+        }
+      },
+      "loadMs": 252.5739,
+      "screenshot": "format-grid.ply.png",
+      "screenshotSha256": "dab149c809dbffc070bef1fe1e9fe19feb64397595380f9d1ab8296d9dad0af6",
+      "passed": true
+    },
+    {
+      "filename": "format-grid-compressed.ply",
+      "bytes": 1705,
+      "sha256": "93eb383ee6e76f18ff08da7b724164e56f289d04e5bea4e97a40ba09a59fd566",
+      "checks": {
+        "valid": true,
+        "truncated": {
+          "restoredPath": true,
+          "screenshotSha256": "de123de075c9b8c51e34e76f38e47862b3ff0f9edc70f952140f0d924a86b635"
+        },
+        "corrupt": {
+          "restoredPath": true,
+          "screenshotSha256": "de123de075c9b8c51e34e76f38e47862b3ff0f9edc70f952140f0d924a86b635"
+        }
+      },
+      "loadMs": 263.58849999999984,
+      "screenshot": "format-grid-compressed.ply.png",
+      "screenshotSha256": "de123de075c9b8c51e34e76f38e47862b3ff0f9edc70f952140f0d924a86b635",
+      "passed": true
+    },
+    {
+      "filename": "format-grid.spz",
+      "bytes": 406,
+      "sha256": "f8c1335042126419a82e1c5fb86f9c7aa5321b5c77b4ae14ee0c519e69e7821d",
+      "checks": {
+        "valid": true,
+        "truncated": {
+          "restoredPath": true,
+          "screenshotSha256": "eeb8dc3fd9b28385f829f6cfbce6c74cc7317a46913e7117e2c8bd4435676437"
+        },
+        "corrupt": {
+          "restoredPath": true,
+          "screenshotSha256": "eeb8dc3fd9b28385f829f6cfbce6c74cc7317a46913e7117e2c8bd4435676437"
+        }
+      },
+      "loadMs": 528.9943999999996,
+      "screenshot": "format-grid.spz.png",
+      "screenshotSha256": "eeb8dc3fd9b28385f829f6cfbce6c74cc7317a46913e7117e2c8bd4435676437",
+      "passed": true
+    },
+    {
+      "filename": "knock-community-hall.sog",
+      "bytes": 29768772,
+      "sha256": "5931c2b44710aa1d42a48f89b6b4546108430b16700b8eb5a656f8a55f25227a",
+      "checks": {
+        "valid": true,
+        "truncated": {
+          "restoredPath": true,
+          "screenshotSha256": "496ef6cee60b1d7e7ecf4343b04671bf9244f3e2ad88e3717026a5d85a38dee1"
+        },
+        "corrupt": {
+          "restoredPath": true,
+          "screenshotSha256": "496ef6cee60b1d7e7ecf4343b04671bf9244f3e2ad88e3717026a5d85a38dee1"
+        }
+      },
+      "loadMs": 9955.2477,
+      "screenshot": "knock-community-hall.sog.png",
+      "screenshotSha256": "496ef6cee60b1d7e7ecf4343b04671bf9244f3e2ad88e3717026a5d85a38dee1",
+      "passed": true
+    },
+    {
+      "filename": "format-grid.splat",
+      "bytes": 2048,
+      "sha256": "62a1dd7b3ff118a5bc6be93f327266b0aafbbe589cdf067a58306837da661d91",
+      "checks": {
+        "valid": true,
+        "truncated": {
+          "restoredPath": true,
+          "screenshotSha256": "a5b52e9caa97ee44702557492beaca1493eb5f3a015f3ba7f4397c8baa0eceb5"
+        },
+        "corrupt": {
+          "restoredPath": true,
+          "screenshotSha256": "a5b52e9caa97ee44702557492beaca1493eb5f3a015f3ba7f4397c8baa0eceb5"
+        }
+      },
+      "loadMs": 528.2116999999998,
+      "screenshot": "format-grid.splat.png",
+      "screenshotSha256": "a5b52e9caa97ee44702557492beaca1493eb5f3a015f3ba7f4397c8baa0eceb5",
+      "passed": true
+    },
+    {
+      "filename": "format-grid.ksplat",
+      "bytes": 7936,
+      "sha256": "0648de393b4295c0730a689ed7321fdc9f65ab9d445eec52147ea387415ad18d",
+      "checks": {
+        "valid": true,
+        "truncated": {
+          "restoredPath": true,
+          "screenshotSha256": "743c47c09dc9b4892f4724fbb47413ceac9fa9d0e2d86783df88ac921939cdff"
+        },
+        "corrupt": {
+          "restoredPath": true,
+          "screenshotSha256": "743c47c09dc9b4892f4724fbb47413ceac9fa9d0e2d86783df88ac921939cdff"
+        }
+      },
+      "loadMs": 518.1682999999975,
+      "screenshot": "format-grid.ksplat.png",
+      "screenshotSha256": "743c47c09dc9b4892f4724fbb47413ceac9fa9d0e2d86783df88ac921939cdff",
+      "passed": true
+    },
+    {
+      "filename": "hall.zip",
+      "bytes": 29768772,
+      "sha256": "5931c2b44710aa1d42a48f89b6b4546108430b16700b8eb5a656f8a55f25227a",
+      "checks": {
+        "valid": true,
+        "truncated": {
+          "restoredPath": true,
+          "screenshotSha256": "496ef6cee60b1d7e7ecf4343b04671bf9244f3e2ad88e3717026a5d85a38dee1"
+        },
+        "corrupt": {
+          "restoredPath": true,
+          "screenshotSha256": "496ef6cee60b1d7e7ecf4343b04671bf9244f3e2ad88e3717026a5d85a38dee1"
+        }
+      },
+      "loadMs": 9969.711200000005,
+      "screenshot": "hall.zip.png",
+      "screenshotSha256": "496ef6cee60b1d7e7ecf4343b04671bf9244f3e2ad88e3717026a5d85a38dee1",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "passed": true,
+  "completedAt": "2026-09-04T01:55:42.839Z"
+}

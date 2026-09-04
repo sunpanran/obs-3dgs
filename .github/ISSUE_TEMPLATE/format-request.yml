@@ -1,0 +1,34 @@
+name: Format compatibility / 格式兼容
+description: Request or report compatibility with a Gaussian scene format.
+title: "[Format]: "
+labels: ["format", "needs-triage"]
+body:
+  - type: input
+    id: format
+    attributes:
+      label: Format, producer, and version / 格式、导出工具与版本
+    validations:
+      required: true
+  - type: textarea
+    id: specification
+    attributes:
+      label: Public specification or implementation / 公开规范或实现
+      description: Include upstream links and exact licenses.
+    validations:
+      required: true
+  - type: textarea
+    id: fixture
+    attributes:
+      label: Redistributable fixture / 可再分发样例
+      description: Link a small fixture and state its license; do not upload private captures.
+  - type: dropdown
+    id: current
+    attributes:
+      label: Current behavior / 当前表现
+      options:
+        - Rejected before loading / 加载前被拒绝
+        - Load error / 加载错误
+        - Incorrect rendering / 渲染错误
+        - New format request / 新格式请求
+    validations:
+      required: true
