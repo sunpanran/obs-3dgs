@@ -4,6 +4,12 @@ Run web checks with `npm run typecheck`, `npm run lint`, `npm test`, and `npm ru
 
 Rendering evidence must identify the scene, camera pose, focal length, output resolution, render scale, quality preset, GPU, average FPS, P95 frame time, and screenshot. Do not compare two captures made with different camera or quality state.
 
+## First beta acceptance
+
+Publication of `0.1.0-beta.1` awaits the seven Windows frontend checks in the [manual checklist](manual-acceptance.md). After they pass, the beta may be published while macOS hardware validation is pending, provided the README and release notes explicitly state that macOS has not been tested in OBS on a physical Mac. The M1 performance targets below remain unverified validation targets; they are not a publication gate for this beta. RTX 4060 performance remains a Stable gate.
+
+## Recorded evidence
+
 The current renderer-only preflight is recorded in [Windows Web renderer preflight](benchmarks/2026-09-03-windows-web-preflight.md). It does not replace the OBS integration gate below.
 
 The categorized source-properties UI passed a real OBS exploratory smoke test recorded in [Windows OBS properties smoke test](benchmarks/2026-09-03-windows-obs-properties-smoke.md).

@@ -4,6 +4,12 @@ Web 检查使用 `npm run typecheck`、`npm run lint`、`npm test` 和 `npm run 
 
 渲染证据必须记录场景、相机姿态、焦段、输出分辨率、内部比例、质量档位、GPU、平均 FPS、P95 帧时间和截图。相机或质量状态不同的两张图不能直接做性能对比。
 
+## 首个 Beta 的验收条件
+
+`0.1.0-beta.1` 发布前等待[人工验收清单](manual-acceptance.zh-CN.md)中的 Windows 七项结果。通过后可以发布 Beta，README 和发布说明必须明确写出“macOS 尚未在真实 Mac 的 OBS 中验证”。Mac 真机测试可在本次 Beta 发布后补做；下方 M1 性能指标仍是未验证的验收目标，不再阻塞本次 Beta 发布。RTX 4060 性能仍为 Stable 门槛。
+
+## 已有证据
+
 当前仅渲染器预检记录在 [Windows Web 渲染预检](benchmarks/2026-09-03-windows-web-preflight.zh-CN.md)，它不能代替下方 OBS 集成门槛。
 
 分类化来源属性页已通过真实 OBS 探索性冒烟测试，记录见 [Windows OBS 属性页冒烟测试](benchmarks/2026-09-03-windows-obs-properties-smoke.zh-CN.md)。
