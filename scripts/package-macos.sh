@@ -24,7 +24,7 @@ codesign --verify --deep --strict "${stage_root}/obs-3dgs.plugin"
 binary_path="${stage_root}/obs-3dgs.plugin/Contents/MacOS/obs-3dgs"
 lipo "${binary_path}" -verify_arch arm64 x86_64
 linked_libraries="$(otool -L "${binary_path}")"
-if print -r -- "${linked_libraries}" | tail -n +2 | grep -E '/opt/homebrew/|/usr/local/Cellar/|/Users/runner/'; then
+if print -r -- "${linked_libraries}" | awk '/^[ \t]/{print}' | grep -E '/opt/homebrew/|/usr/local/Cellar/|/Users/runner/'; then
   print -u2 "The plugin must not depend on the build machine's private libraries"
   exit 1
 fi
