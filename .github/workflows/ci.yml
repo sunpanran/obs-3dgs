@@ -36,7 +36,8 @@ jobs:
 
   windows:
     name: Windows x64 plugin
-    runs-on: windows-2025
+    # Match the pinned Visual Studio 17 2022 generator used by the local build.
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
